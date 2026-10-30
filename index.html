@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Léon Corazón — Développeur Web</title>
+    <script>
+        // Applique le thème avant l'affichage (évite le flash)
+        try {
+            const t = localStorage.getItem("theme");
+            if (t) document.documentElement.setAttribute("data-theme", t);
+        } catch (e) { }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,400&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header class="nav" id="nav">
+        <a href="#home" class="logo">LÉON<span>.</span></a>
+        <nav>
+            <a href="#home">Accueil</a>
+            <a href="#about">À propos</a>
+            <a href="#skills">Compétences</a>
+            <a href="#contact">Contact</a>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Changer de thème">☾</button>
+        </nav>
+    </header>
+
+    <!-- HERO / SLIDER -->
+    <section id="home" class="stage">
+        <div id="bg" class="bg"></div>
+
+        <div id="details" class="details">
+            <p class="eyebrow" id="d-cat"></p>
+            <h1 id="d-title"></h1>
+            <p class="desc" id="d-desc"></p>
+            <div class="actions">
+                <a id="d-link" class="btn" href="#" target="_blank" rel="noopener">Voir le projet</a>
+                <a class="btn ghost" href="#contact">Me contacter</a>
+            </div>
+        </div>
+
+        <div id="cards" class="cards"></div>
+
+        <div class="controls">
+            <button id="prev" aria-label="Précédent">&#8592;</button>
+            <button id="next" aria-label="Suivant">&#8594;</button>
+            <div class="progress">
+                <div id="bar"></div>
+            </div>
+            <div class="counter"><span id="num">01</span> / <span id="total"></span></div>
+        </div>
+    </section>
+
+    <!-- À PROPOS -->
+    <section id="about" class="section">
+        <h2>À propos</h2>
+        <p>
+            Je suis <strong>Léon Corazón</strong>, développeur web en formation passionné
+            par la création de sites modernes : boutiques en ligne, applications mobiles
+            et outils d'automatisation. Je construis des projets concrets pour apprendre
+            et progresser chaque jour.
+        </p>
+    </section>
+
+    <!-- COMPÉTENCES -->
+    <section id="skills" class="section dark">
+        <h2>Compétences</h2>
+        <div class="skills">
+            <span>HTML5</span><span>CSS3</span><span>JavaScript</span>
+            <span>Node.js</span><span>Express</span><span>Python</span>
+            <span>Kotlin</span><span>MongoDB</span><span>GSAP</span><span>Git / GitHub</span>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+        <h2>Contact</h2>
+        <p>Un projet en tête ? Écris-moi, je réponds rapidement.</p>
+
+        <form id="contact-form" class="form" novalidate>
+            <div class="row">
+                <input type="text" name="name" placeholder="Ton nom" required />
+                <input type="number" name="phone" placeholder="Ton numéro" required />
+                <input type="email" name="email" placeholder="Ton email" required />
+            </div>
+            <textarea name="message" rows="5" placeholder="Ton message" required></textarea>
+            <!-- Anti-spam : champ caché que seuls les robots remplissent -->
+            <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" />
+            <button type="submit" class="btn" id="form-btn">Envoyer le message</button>
+            <p id="form-status" class="form-status" role="status"></p>
+        </form>
+
+        <div class="actions center">
+            <a class="btn ghost dark-text" href="https://github.com/132737li" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </section>
+
+    <footer>© <span id="year"></span> Léon Corazón — Tous droits réservés</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
