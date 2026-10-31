@@ -10,7 +10,7 @@ const data = [
     title: "Berlly Boutique",
     desc: "Boutique e-commerce avec backend Node.js / Express : catalogue, panier et commandes.",
     bg: "linear-gradient(135deg,#1d2b64,#f8cdda)",
-    link: "https://132737li.github.io/Berlly-Boutique/",
+    link: "https://132737li.github.io/Berlly_Boutique/",
   },
   {
     category: "Site vitrine",
