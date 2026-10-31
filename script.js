@@ -1,6 +1,6 @@
 // ====== RÉGLAGES ======
-const MY_EMAIL = "ton.email@exemple.com"; // remplace par ton vrai email
-const FORMSPREE_ID = "xljjnnlr";
+const MY_EMAIL = "lirakoze602@gmail.com";
+const FORMSPREE_ID = "moeekjwo";
 
 // ====== TES PROJETS ======
 // Remplace "bg" par une image : "url('images/mon-projet.jpg') center/cover"
