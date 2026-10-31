@@ -78,14 +78,14 @@ const FAQ_UI = {
     sub: "Les réponses aux questions que l'on me pose le plus avant de commencer un projet.",
     ctaText: "Tu as une autre question ?",
     ctaBtn: "Me la poser sur WhatsApp",
-    wa: "Bonjour Léon, j'ai une question avant de commencer un projet.",
+    wa: "Bonjour Lionel, j'ai une question avant de commencer un projet.",
   },
   en: {
     title: "Frequently asked questions",
     sub: "Answers to the questions I get asked the most before starting a project.",
     ctaText: "Have another question?",
     ctaBtn: "Ask me on WhatsApp",
-    wa: "Hello Léon, I have a question before starting a project.",
+    wa: "Hello Lionel, I have a question before starting a project.",
   },
 };
 const FAQ_WHATSAPP = "25776672387";
