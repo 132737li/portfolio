@@ -1,7 +1,7 @@
 // ====== TES PROJETS (modifie ici) ======
 // type : "web" | "mobile" | "ia"
 // demo / code : laisse "" s'il n'y a pas encore de lien
-// img : chemin d'une capture (ex: "images/berlly.jpg"). Si vide et qu'il y a une démo,
+// img : chemin d'une capture à toi (ex: "images/berlly.jpg"). Si vide et qu'il y a une démo,
 //       une capture automatique du site est utilisée.
 const PROJECTS = [
   {
@@ -102,6 +102,66 @@ const UI = {
   },
 };
 
+// ====== CAPTURES AUTOMATIQUES ======
+// Les services sont essayés dans l'ordre. Le 1er renvoie d'abord une image d'attente (petite)
+// tant qu'il n'a pas photographié le site : on réessaie alors quelques fois.
+// minWidth : largeur minimale pour considérer que c'est une vraie capture.
+const SHOT_PROVIDERS = [
+  {
+    url: (u, n) => "https://s.wordpress.com/mshots/v1/" + encodeURIComponent(u) + "?w=800&h=500&r=" + n,
+    minWidth: 700, retries: 5, delay: 4000,
+  },
+  {
+    url: (u) => "https://api.microlink.io/?url=" + encodeURIComponent(u) + "&screenshot=true&meta=false&embed=screenshot.url",
+    minWidth: 300, retries: 0, delay: 0,
+  },
+];
+
+const SHOT_PROMISES = {}; // une seule recherche par site, même si on change de langue
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// "good" = vraie capture, "small" = image d'attente, "error" = service indisponible
+function probe(src, minWidth) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img.naturalWidth >= minWidth ? "good" : "small");
+    img.onerror = () => resolve("error");
+    img.src = src;
+  });
+}
+
+async function findShot(demo) {
+  for (const prov of SHOT_PROVIDERS) {
+    for (let n = 0; n <= prov.retries; n++) {
+      const src = prov.url(demo, n);
+      const res = await probe(src, prov.minWidth);
+      if (res === "good") return src;
+      if (res === "error") break;                    // service en panne : on passe au suivant
+      if (n < prov.retries) await sleep(prov.delay); // pas encore prête : on patiente
+    }
+  }
+  return null; // aucune capture : on garde le dégradé
+}
+
+function getShot(demo) {
+  if (!SHOT_PROMISES[demo]) SHOT_PROMISES[demo] = findShot(demo);
+  return SHOT_PROMISES[demo];
+}
+
+// Petit style pour l'apparition en fondu et l'effet d'attente
+(function () {
+  const s = document.createElement("style");
+  s.textContent =
+    ".p-thumb img{opacity:0;transition:opacity .6s}" +
+    ".p-thumb img.ok{opacity:1}" +
+    ".p-thumb.wait::before{content:'';position:absolute;inset:0;z-index:1;" +
+    "background:linear-gradient(110deg,transparent 30%,#ffffff33 50%,transparent 70%);" +
+    "background-size:200% 100%;animation:shotwait 1.4s linear infinite}" +
+    "@keyframes shotwait{to{background-position:-200% 0}}" +
+    "@media (prefers-reduced-motion:reduce){.p-thumb img{transition:none}.p-thumb.wait::before{animation:none}}";
+  document.head.appendChild(s);
+})();
+
 (function () {
   const grid = document.getElementById("grid");
   const filtersEl = document.getElementById("filters");
@@ -115,6 +175,16 @@ const UI = {
     if (text) n.textContent = text;
     return n;
   };
+
+  function addImg(thumb, src, alt) {
+    const img = document.createElement("img");
+    img.alt = alt;
+    img.decoding = "async";
+    img.addEventListener("load", () => img.classList.add("ok"));
+    img.addEventListener("error", () => img.remove());
+    img.src = src;
+    thumb.insertBefore(img, thumb.firstChild);
+  }
 
   function render(animate) {
     const L = window.LANG === "en" ? "en" : "fr";
@@ -144,16 +214,16 @@ const UI = {
 
       const thumb = el("div", "p-thumb");
       thumb.style.background = p.bg;
-      const src = p.img || (p.demo
-        ? "https://s.wordpress.com/mshots/v1/" + encodeURIComponent(p.demo) + "?w=800&h=500"
-        : "");
-      if (src) {
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = ui.alt + p.title;
-        img.loading = "lazy";
-        img.addEventListener("error", () => img.remove());
-        thumb.appendChild(img);
+      const alt = ui.alt + p.title;
+
+      if (p.img) {
+        addImg(thumb, p.img, alt);                   // ta propre capture
+      } else if (p.demo) {
+        thumb.classList.add("wait");                 // capture automatique
+        getShot(p.demo).then((src) => {
+          thumb.classList.remove("wait");
+          if (src) addImg(thumb, src, alt);
+        });
       }
       thumb.appendChild(el("span", "p-type", ui.types[p.type] || p.type));
 
@@ -194,6 +264,6 @@ const UI = {
   }
 
   render(true);
-  // Changement de langue : on redessine sans animation
+  // Changement de langue : on redessine sans animation (les captures déjà trouvées sont réutilisées)
   document.addEventListener("langchange", () => render(false));
 })();
