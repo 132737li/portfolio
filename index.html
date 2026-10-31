@@ -108,7 +108,7 @@
         <div class="about-grid">
             <div class="about-photo">
                 <span class="initial">L</span>
-                <img src="images/photo.jpg" alt="Photo de Léon Corazón" onerror="this.remove()" />
+                <img src="images/photo.png" alt="Photo de Léon Corazón" onerror="this.remove()" />
             </div>
 
             <div class="about-text">
@@ -216,9 +216,9 @@
 
         <form id="contact-form" class="form" novalidate>
             <div class="row">
-                <input type="text" name="name" placeholder="Ton nom" data-i18n-ph="ph.name" required />
-                <input type="number" name="phone" placeholder="Ton numéro" data-i18n-ph="ph.phone" required />
-                <input type="email" name="email" placeholder="Ton email" data-i18n-ph="ph.email" required />
+                <input type="text" name="name" placeholder="Ton nom complet" data-i18n-ph="ph.name" required />
+                <input type="number" name="phone" placeholder="Ton numéro" data-i18n-ph="ph.phone" required min="0"/>
+                <input type="email" name="email" placeholder="Ton email" data-i18n-ph="ph.email" required/>
             </div>
             <textarea name="message" rows="5" placeholder="Décris ton projet" data-i18n-ph="ph.msg" required></textarea>
             <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" />
