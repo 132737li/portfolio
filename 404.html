@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Nécessaire : cette page s'affiche à n'importe quelle adresse du site -->
+    <base href="/portfolio/" />
+    <title>Page introuvable — Léon Corazón</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230e0e10'/%3E%3Ctext x='50' y='70' font-size='62' font-family='Arial' font-weight='700' text-anchor='middle' fill='%23ffb02e'%3EL%3C/text%3E%3C/svg%3E" />
+    <script>
+        try {
+            const t = localStorage.getItem("theme");
+            if (t) document.documentElement.setAttribute("data-theme", t);
+        } catch (e) { }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,400&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="extras.css" />
+    <style>
+        .t-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5vw;
+            color: var(--text);
+        }
+
+        .t-logo {
+            color: inherit;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .t-logo span {
+            color: var(--accent);
+        }
+
+        .t-tools {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .t-main {
+            min-height: calc(100vh - 140px);
+            display: grid;
+            place-items: center;
+            padding: 20px 5vw 50px;
+        }
+
+        .t-card {
+            width: 100%;
+            max-width: 640px;
+            text-align: center;
+            padding: 44px 30px;
+            border-radius: 24px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 50px #0003;
+            animation: rise .6s ease both;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .code404 {
+            font-size: clamp(80px, 22vw, 140px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 6px;
+            background: linear-gradient(135deg, var(--accent), #ff7e5f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .t-card h1 {
+            font-size: clamp(22px, 5vw, 30px);
+            margin: 10px 0 12px;
+        }
+
+        .t-lead {
+            line-height: 1.8;
+            opacity: .88;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .t-path {
+            display: inline-block;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            margin-bottom: 26px;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            background: var(--bg);
+            border: 1px dashed var(--border);
+            opacity: .85;
+        }
+
+        .t-card .actions {
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .t-card button.btn {
+            font-family: inherit;
+        }
+
+        .t-links-title {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: .7;
+            margin-bottom: 12px;
+        }
+
+        .t-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .t-links a {
+            padding: 9px 20px;
+            border-radius: 40px;
+            font-size: 13px;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            transition: .25s;
+        }
+
+        .t-links a:hover {
+            border-color: var(--accent);
+            color: var(--accent-text);
+            transform: translateY(-2px);
+        }
+
+        .t-note {
+            margin-top: 26px;
+            font-size: 12px;
+            opacity: .75;
+        }
+
+        .t-note a {
+            color: var(--accent-text);
+        }
+
+        footer {
+            padding-top: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .t-card,
+            .code404 {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="t-top">
+        <a href="index.html" class="t-logo">LÉON<span>.</span></a>
+        <div class="t-tools">
+            <button id="lang-toggle" class="lang-toggle" aria-label="Changer de langue">EN</button>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Changer de thème">☾</button>
+        </div>
+    </header>
+
+    <main class="t-main">
+        <section class="t-card">
+            <div class="code404" aria-hidden="true">404</div>
+            <h1 data-i18n="title">Oups, cette page n'existe pas</h1>
+            <p class="t-lead" data-i18n="lead">Le lien est peut-être cassé, ou la page a été déplacée. Pas de panique :
+                tu peux revenir en arrière ou repartir de l'accueil.</p>
+            <code class="t-path" id="path"></code>
+
+            <div class="actions center">
+                <button type="button" class="btn ghost dark-text" id="back" data-i18n="back">← Page précédente</button>
+                <a class="btn" href="index.html" data-i18n="home">Retour à l'accueil</a>
+            </div>
+
+            <p class="t-links-title" data-i18n="quick">Ou va directement à</p>
+            <div class="t-links">
+                <a href="index.html#projects" data-i18n="l1">Projets</a>
+                <a href="index.html#pricing" data-i18n="l2">Tarifs</a>
+                <a href="index.html#faq" data-i18n="l3">FAQ</a>
+                <a href="index.html#contact" data-i18n="l4">Contact</a>
+            </div>
+
+            <p class="t-note"><span data-i18n="note">Un lien cassé sur mon site ?</span> <a id="wa"
+                    href="https://wa.me/25776672387" target="_blank" rel="noopener" data-i18n="report">Préviens-moi sur
+                    WhatsApp</a></p>
+        </section>
+    </main>
+
+    <footer>© <span id="year"></span> Léon Corazón</footer>
+
+    <script>
+        const D = {
+            fr: {
+                title: "Oups, cette page n'existe pas",
+                lead: "Le lien est peut-être cassé, ou la page a été déplacée. Pas de panique : tu peux revenir en arrière ou repartir de l'accueil.",
+                back: "← Page précédente", home: "Retour à l'accueil",
+                quick: "Ou va directement à",
+                l1: "Projets", l2: "Tarifs", l3: "FAQ", l4: "Contact",
+                note: "Un lien cassé sur mon site ?", report: "Préviens-moi sur WhatsApp",
+                pageTitle: "Page introuvable — Léon Corazón",
+                waMsg: "Bonjour Léon, j'ai trouvé un lien cassé sur ton portfolio : ",
+                btn: "EN", aria: "Switch to English",
+            },
+            en: {
+                title: "Oops, this page doesn't exist",
+                lead: "The link may be broken, or the page may have moved. No worries: you can go back or start again from the home page.",
+                back: "← Previous page", home: "Back to home",
+                quick: "Or jump straight to",
+                l1: "Projects", l2: "Pricing", l3: "FAQ", l4: "Contact",
+                note: "Found a broken link on my site?", report: "Tell me on WhatsApp",
+                pageTitle: "Page not found — Léon Corazón",
+                waMsg: "Hello Léon, I found a broken link on your portfolio: ",
+                btn: "FR", aria: "Passer en français",
+            },
+        };
+
+        let lang = "fr";
+        try {
+            lang = localStorage.getItem("lang") ||
+                ((navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en");
+        } catch (e) { }
+
+        const shownPath = location.pathname.replace(/^\/portfolio\//, "/") + location.search;
+        document.getElementById("path").textContent = shownPath;
+
+        function apply(l) {
+            lang = l;
+            const d = D[l];
+            document.documentElement.lang = l;
+            document.title = d.pageTitle;
+            document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = d[el.dataset.i18n]; });
+            document.getElementById("wa").href = "https://wa.me/25776672387?text=" + encodeURIComponent(d.waMsg + shownPath);
+            const b = document.getElementById("lang-toggle");
+            b.textContent = d.btn; b.setAttribute("aria-label", d.aria);
+            try { localStorage.setItem("lang", l); } catch (e) { }
+        }
+        document.getElementById("lang-toggle").addEventListener("click", () => apply(lang === "fr" ? "en" : "fr"));
+
+        // Bouton retour : revient à la page précédente si elle vient de ce site, sinon va à l'accueil
+        document.getElementById("back").addEventListener("click", () => {
+            let sameSite = false;
+            try { sameSite = document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) { }
+            if (history.length > 1 && sameSite) history.back();
+            else location.href = "index.html";
+        });
+
+        // Thème
+        const tb = document.getElementById("theme-toggle");
+        function setTheme(t) {
+            document.documentElement.setAttribute("data-theme", t);
+            tb.textContent = t === "light" ? "☀" : "☾";
+            try { localStorage.setItem("theme", t); } catch (e) { }
+        }
+        let theme = "dark";
+        try {
+            theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        } catch (e) { }
+        setTheme(theme);
+        tb.addEventListener("click", () => setTheme(document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"));
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+        apply(lang);
+    </script>
+</body>
+
+</html>

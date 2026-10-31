@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message envoyé — Léon Corazón</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230e0e10'/%3E%3Ctext x='50' y='70' font-size='62' font-family='Arial' font-weight='700' text-anchor='middle' fill='%23ffb02e'%3EL%3C/text%3E%3C/svg%3E" />
+    <script>
+        try {
+            const t = localStorage.getItem("theme");
+            if (t) document.documentElement.setAttribute("data-theme", t);
+        } catch (e) { }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,400&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="extras.css" />
+    <style>
+        .t-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5vw;
+            color: var(--text);
+        }
+
+        .t-tools {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .t-main {
+            min-height: calc(100vh - 140px);
+            display: grid;
+            place-items: center;
+            padding: 30px 5vw 50px;
+        }
+
+        .t-card {
+            width: 100%;
+            max-width: 620px;
+            text-align: center;
+            padding: 44px 30px;
+            border-radius: 24px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 50px #0003;
+            animation: rise .6s ease both;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .t-check {
+            width: 84px;
+            height: 84px;
+            margin-bottom: 18px;
+        }
+
+        .t-check .c {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 2.5;
+            stroke-dasharray: 160;
+            stroke-dashoffset: 160;
+            animation: draw .8s .1s ease forwards;
+        }
+
+        .t-check .p {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 40;
+            stroke-dashoffset: 40;
+            animation: draw .5s .8s ease forwards;
+        }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .t-card h1 {
+            font-size: clamp(26px, 5vw, 34px);
+            margin-bottom: 12px;
+        }
+
+        .t-lead {
+            line-height: 1.8;
+            opacity: .88;
+            margin-bottom: 28px;
+            font-size: 15px;
+        }
+
+        .t-steps {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 0 0 30px;
+            padding: 0;
+            text-align: left;
+        }
+
+        .t-steps li {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .t-steps b {
+            flex: 0 0 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--accent);
+            color: #111;
+            font-size: 13px;
+        }
+
+        .t-note {
+            margin-top: 24px;
+            font-size: 12px;
+            opacity: .7;
+        }
+
+        .t-card .actions {
+            justify-content: center;
+        }
+
+        .btn.wa {
+            background: #25d366;
+            border-color: #25d366;
+            color: #0b2e1a;
+        }
+
+        footer {
+            padding-top: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .t-card {
+                animation: none;
+            }
+
+            .t-check .c,
+            .t-check .p {
+                animation: none;
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="t-top">
+        <a href="index.html" class="logo"
+            style="color:inherit;text-decoration:none;font-weight:700;letter-spacing:3px;">LÉON<span
+                style="color:var(--accent)">.</span></a>
+        <div class="t-tools">
+            <button id="lang-toggle" class="lang-toggle" aria-label="Changer de langue">EN</button>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Changer de thème">☾</button>
+        </div>
+    </header>
+
+    <main class="t-main">
+        <section class="t-card">
+            <svg class="t-check" viewBox="0 0 52 52" aria-hidden="true">
+                <circle class="c" cx="26" cy="26" r="24" />
+                <path class="p" d="M14 27l8 8 16-17" />
+            </svg>
+
+            <h1 data-i18n="title">Message envoyé !</h1>
+            <p class="t-lead" data-i18n="lead">Merci pour ton message. Je l'ai bien reçu et je te réponds dès que
+                possible.</p>
+
+            <ol class="t-steps">
+                <li><b>1</b><span data-i18n="s1">Je lis ton message et je note les détails de ton projet.</span></li>
+                <li><b>2</b><span data-i18n="s2">Je te réponds par email, ou sur WhatsApp si tu préfères.</span></li>
+                <li><b>3</b><span data-i18n="s3">On définit ensemble ton besoin et je te prépare un devis
+                        gratuit.</span></li>
+            </ol>
+
+            <div class="actions center">
+                <a class="btn" href="index.html" data-i18n="home">Retour à l'accueil</a>
+                <a class="btn wa" id="wa" href="https://wa.me/25776672387" target="_blank" rel="noopener"
+                    data-i18n="wa">Écrire sur WhatsApp</a>
+                <a class="btn ghost dark-text" href="index.html#projects" data-i18n="proj">Voir mes projets</a>
+            </div>
+
+            <p class="t-note" data-i18n="note">Pressé ? WhatsApp reste le moyen le plus rapide de me joindre.</p>
+        </section>
+    </main>
+
+    <footer>© <span id="year"></span> Léon Corazón</footer>
+
+    <script>
+        const D = {
+            fr: {
+                title: "Message envoyé !",
+                lead: "Merci pour ton message. Je l'ai bien reçu et je te réponds dès que possible.",
+                s1: "Je lis ton message et je note les détails de ton projet.",
+                s2: "Je te réponds par email, ou sur WhatsApp si tu préfères.",
+                s3: "On définit ensemble ton besoin et je te prépare un devis gratuit.",
+                home: "Retour à l'accueil", wa: "Écrire sur WhatsApp", proj: "Voir mes projets",
+                note: "Pressé ? WhatsApp reste le moyen le plus rapide de me joindre.",
+                pageTitle: "Message envoyé — Léon Corazón",
+                waMsg: "Bonjour Léon, je viens de t'envoyer un message depuis ton portfolio.",
+                btn: "EN", aria: "Switch to English",
+            },
+            en: {
+                title: "Message sent!",
+                lead: "Thank you for your message. I received it and I'll reply as soon as possible.",
+                s1: "I read your message and note the details of your project.",
+                s2: "I reply by email, or on WhatsApp if you prefer.",
+                s3: "Together we define your needs and I prepare a free quote.",
+                home: "Back to home", wa: "Message me on WhatsApp", proj: "See my projects",
+                note: "In a hurry? WhatsApp is still the fastest way to reach me.",
+                pageTitle: "Message sent — Léon Corazón",
+                waMsg: "Hello Léon, I just sent you a message from your portfolio.",
+                btn: "FR", aria: "Passer en français",
+            },
+        };
+
+        let lang = "fr";
+        try {
+            lang = localStorage.getItem("lang") ||
+                ((navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en");
+        } catch (e) { }
+
+        function apply(l) {
+            lang = l;
+            const d = D[l];
+            document.documentElement.lang = l;
+            document.title = d.pageTitle;
+            document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = d[el.dataset.i18n]; });
+            document.getElementById("wa").href = "https://wa.me/25776672387?text=" + encodeURIComponent(d.waMsg);
+            const b = document.getElementById("lang-toggle");
+            b.textContent = d.btn; b.setAttribute("aria-label", d.aria);
+            try { localStorage.setItem("lang", l); } catch (e) { }
+        }
+        document.getElementById("lang-toggle").addEventListener("click", () => apply(lang === "fr" ? "en" : "fr"));
+
+        // Thème
+        const tb = document.getElementById("theme-toggle");
+        function setTheme(t) {
+            document.documentElement.setAttribute("data-theme", t);
+            tb.textContent = t === "light" ? "☀" : "☾";
+            try { localStorage.setItem("theme", t); } catch (e) { }
+        }
+        let theme = "dark";
+        try {
+            theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        } catch (e) { }
+        setTheme(theme);
+        tb.addEventListener("click", () => setTheme(document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"));
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+        apply(lang);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+.section.pricing {
+    max-width: 1100px;
+}
+
+.pricing .sub {
+    max-width: 620px;
+    margin: 0 auto 26px;
+}
+
+/* Choix de la devise */
+.cur-switch {
+    display: inline-flex;
+    gap: 4px;
+    padding: 5px;
+    border-radius: 40px;
+    margin-bottom: 38px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+}
+
+.cur-switch button {
+    padding: 9px 20px;
+    border-radius: 40px;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    background: transparent;
+    color: var(--text);
+    transition: .25s;
+}
+
+.cur-switch button:hover {
+    color: var(--accent-text);
+}
+
+.cur-switch button.active {
+    background: var(--accent);
+    color: #111;
+    font-weight: 500;
+}
+
+/* Forfaits */
+.plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 24px;
+    text-align: left;
+    align-items: stretch;
+}
+
+.plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 32px 26px 26px;
+    border-radius: 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+}
+
+.plan:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 34px #0004;
+    border-color: var(--accent);
+}
+
+.plan.popular {
+    border: 2px solid var(--accent);
+}
+
+.plan-tag {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+    background: var(--accent);
+    color: #111;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.plan-icon {
+    font-size: 34px;
+}
+
+.plan h3 {
+    font-size: 20px;
+}
+
+.plan-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: .8;
+    margin: 0;
+}
+
+.plan-price {
+    display: flex;
+    flex-direction: column;
+    margin: 6px 0 0;
+}
+
+.plan-price small {
+    font-size: 12px;
+    opacity: .7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.plan-price strong {
+    font-size: 30px;
+    color: var(--accent-text);
+}
+
+.plan-days {
+    font-size: 12px;
+    opacity: .75;
+    margin: 0;
+}
+
+.plan-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 6px 0 14px;
+    padding: 0;
+}
+
+.plan-list li {
+    font-size: 13px;
+    padding-left: 24px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.plan-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent-text);
+    font-weight: 700;
+}
+
+.plan .btn {
+    margin-top: auto;
+    text-align: center;
+}
+
+/* Bloc paiement */
+.pay-box {
+    max-width: 720px;
+    margin: 44px auto 0;
+    padding: 26px 24px;
+    border-radius: 18px;
+    background: var(--bg2);
+    border: 1px dashed var(--accent);
+}
+
+.pay-box h3 {
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+.pay-box p {
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+
+.pay-box .pay-account {
+    font-weight: 700;
+    color: var(--accent-text);
+}
+
+.pay-box .btn {
+    margin-top: 4px;
+}
+
+/* Menu mobile : on masque 2 liens pour que tout tienne (menu burger possible ensuite) */
+@media (max-width: 768px) {
+
+    .nav nav a[href="#home"],
+    .nav nav a[href="#skills"] {
+        display: none;
+    }
+
+    .cur-switch button {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .plan-price strong {
+        font-size: 26px;
+    }
+}

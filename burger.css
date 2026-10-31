@@ -1,0 +1,145 @@
+/* Disposition : logo à gauche, liens, puis outils (langue, thème, burger) */
+.nav-links {
+    margin-left: auto;
+}
+
+.nav-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 22px;
+}
+
+/* Lien de la section visible */
+.nav nav a.active {
+    color: var(--accent);
+    opacity: 1;
+}
+
+/* Bouton burger (caché sur ordinateur) */
+.burger {
+    display: none;
+    position: relative;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.burger:hover {
+    background: var(--accent);
+    color: #111;
+    border-color: var(--accent);
+}
+
+.burger span {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform .3s, opacity .3s, top .3s;
+}
+
+.burger span:nth-child(1) {
+    top: 11px;
+}
+
+.burger span:nth-child(2) {
+    top: 17px;
+}
+
+.burger span:nth-child(3) {
+    top: 23px;
+}
+
+.burger.is-open span:nth-child(1) {
+    top: 17px;
+    transform: rotate(45deg);
+}
+
+.burger.is-open span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger.is-open span:nth-child(3) {
+    top: 17px;
+    transform: rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .burger {
+        display: inline-block;
+    }
+
+    .nav-tools {
+        margin-left: auto;
+        gap: 8px;
+    }
+
+    /* Panneau du menu : s'ouvre sous la barre */
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0 !important;
+        background: var(--bg);
+        color: var(--text);
+        border-top: 1px solid var(--border);
+        box-shadow: 0 18px 30px #0004;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        transition: max-height .35s ease, opacity .25s, visibility .35s;
+    }
+
+    .nav-links.open {
+        max-height: 80vh;
+        overflow-y: auto;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Tous les liens visibles dans le panneau (annule le masquage de pricing.css) */
+    .nav .nav-links a {
+        display: block !important;
+        padding: 16px 5vw;
+        font-size: 13px !important;
+        letter-spacing: 1.5px !important;
+        opacity: 1;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .nav .nav-links a:last-child {
+        border-bottom: 0;
+    }
+
+    /* Barre pleine quand le menu est ouvert */
+    .nav.menu-open {
+        background: var(--bg);
+        color: var(--text);
+        box-shadow: 0 2px 20px #0003;
+    }
+
+    body.no-scroll {
+        overflow: hidden;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nav-links,
+    .burger span {
+        transition: none;
+    }
+}

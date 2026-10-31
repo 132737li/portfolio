@@ -1,0 +1,123 @@
+[hidden] {
+    display: none !important;
+}
+
+/* Bouton de langue */
+.lang-toggle {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: .25s;
+}
+
+.lang-toggle:hover {
+    background: var(--accent);
+    color: #111;
+    border-color: var(--accent);
+}
+
+/* Avis clients */
+.section.reviews {
+    max-width: 1100px;
+}
+
+.reviews .sub {
+    max-width: 600px;
+    margin: 0 auto 34px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    text-align: left;
+}
+
+.review {
+    position: relative;
+    padding: 28px 24px 22px;
+    border-radius: 18px;
+    margin: 0;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform .3s, border-color .3s;
+}
+
+.review:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.review::before {
+    content: "“";
+    position: absolute;
+    top: 4px;
+    right: 18px;
+    font-size: 70px;
+    line-height: 1;
+    color: var(--accent);
+    opacity: .35;
+}
+
+.stars {
+    color: var(--accent);
+    letter-spacing: 3px;
+    font-size: 15px;
+}
+
+.review blockquote {
+    font-size: 14px;
+    line-height: 1.8;
+    opacity: .9;
+    font-style: italic;
+    margin: 0;
+}
+
+.who {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: auto;
+}
+
+.who b {
+    font-size: 14px;
+}
+
+.who span {
+    font-size: 12px;
+    opacity: .75;
+}
+
+.who em {
+    font-size: 11px;
+    color: var(--accent-text);
+    font-style: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .lang-toggle {
+        height: 30px;
+        padding: 0 10px;
+        font-size: 10px;
+    }
+
+    .theme-toggle {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+}

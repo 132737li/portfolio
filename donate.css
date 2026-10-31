@@ -1,0 +1,160 @@
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Lien « Soutenir » dans le pied de page */
+.link-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: var(--accent-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.link-btn:hover {
+    color: var(--accent);
+}
+
+/* Fenêtre de don */
+.d-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: #000a;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, visibility .25s;
+}
+
+.d-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.d-modal {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+    padding: 38px 28px 28px;
+    border-radius: 24px;
+    background: var(--bg2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 60px #0006;
+    transform: translateY(20px) scale(.97);
+    transition: transform .3s;
+}
+
+.d-overlay.open .d-modal {
+    transform: none;
+}
+
+.d-modal:focus {
+    outline: none;
+}
+
+.d-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: inherit;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.d-close:hover {
+    background: var(--accent);
+    color: #111;
+    border-color: var(--accent);
+}
+
+.d-heart {
+    font-size: 42px;
+    margin-bottom: 8px;
+    animation: beat 1.6s ease-in-out infinite;
+}
+
+@keyframes beat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.18);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.12);
+    }
+}
+
+.d-modal h3 {
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.d-modal p {
+    font-size: 14px;
+    line-height: 1.8;
+    opacity: .88;
+    margin-bottom: 20px;
+}
+
+.d-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.d-actions .btn {
+    text-align: center;
+}
+
+.d-modal .btn.wa {
+    background: #25d366;
+    border-color: #25d366;
+    color: #0b2e1a;
+}
+
+.d-modal .d-note {
+    font-size: 12px;
+    opacity: .7;
+    margin: 0;
+}
+
+.d-note a {
+    color: var(--accent-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .d-heart {
+        animation: none;
+    }
+
+    .d-overlay,
+    .d-modal {
+        transition: none;
+    }
+}
