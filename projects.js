@@ -11,8 +11,8 @@ const PROJECTS = [
       en: "Beauty products store: categories, cart, product pages and contact. Node.js / Express backend.",
     },
     tech: ["HTML", "CSS", "JavaScript", "Node.js", "Express"],
-    demo: "https://132737li.github.io/Berlly-Boutique/",
-    code: "https://github.com/132737li/Berlly-Boutique",
+    demo: "https://132737li.github.io/Berlly_Boutique/",
+    code: "https://github.com/132737li/Berlly_Boutique",
     img: "", bg: "linear-gradient(135deg,#1d2b64,#f8cdda)",
   },
   {
