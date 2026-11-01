@@ -33,7 +33,7 @@ const PROJECTS = [
       en: "A project around artificial intelligence and automation, linked to my JARVIS assistant.",
     },
     tech: ["JavaScript", "IA"],
-    demo: "https://132737li.github.io/lionflow-ai/",
+    demo: "",
     code: "https://github.com/132737li/lionflow-ai",
     img: "", bg: "linear-gradient(135deg,#141e30,#243b55 60%,#7f00ff)",
   },
