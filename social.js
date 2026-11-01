@@ -8,7 +8,7 @@ const SOCIALS = [
   { id: "whatsapp",  url: "https://wa.me/25776672387" },
     { id: "fiverr",    url: "https://www.fiverr.com/leoncorazon26" },
   { id: "x",         url: "https://x.com/IrakozeL2526" },
-  { id: "tiktok",    url: "https://www.tiktok.com/@leoncorazon_26" },
+  { id: "tiktok",    url: "tiktok.com/@leoncorazon_26" },
   { id: "github",    url: "https://github.com/132737li" },
 ];
 
