@@ -432,6 +432,81 @@
             color: var(--muted);
         }
 
+        /* liens rapides */
+        [hidden] {
+            display: none !important;
+        }
+
+        .quick {
+            margin-top: 22px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s;
+        }
+
+        .quick.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .quick-title {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quick-links a {
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 12px;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--line);
+            background: #ffffff08;
+            transition: .25s;
+        }
+
+        .quick-links a:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* redirection automatique */
+        .redirect {
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .redirect b {
+            color: var(--gold);
+        }
+
+        .link-btn {
+            background: none;
+            border: 0;
+            padding: 0;
+            margin-left: 6px;
+            cursor: pointer;
+            font: inherit;
+            color: var(--gold);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .link-btn:hover {
+            color: #fff;
+        }
+
         footer {
             text-align: center;
             padding: 0 5vw 26px;
@@ -511,14 +586,34 @@
                     <div class="actions" id="actions">
                         <button type="button" class="btn ghost" id="back">← Page précédente</button>
                         <a class="btn" id="home" href="index.html">Retour à l'accueil</a>
+                        <a class="btn ghost" id="report" href="#" target="_blank" rel="noopener">Signaler le lien
+                            cassé</a>
                     </div>
+
+                    <div class="quick" id="quick" hidden>
+                        <p class="quick-title" id="quick-title"></p>
+                        <div class="quick-links">
+                            <a href="index.html#projects" id="q1"></a>
+                            <a href="index.html#pricing" id="q2"></a>
+                            <a href="index.html#faq" id="q3"></a>
+                            <a href="index.html#contact" id="q4"></a>
+                        </div>
+                    </div>
+
+                    <p class="redirect" id="redirect" hidden>
+                        <span id="cdtext"></span>
+                        <button type="button" class="link-btn" id="cdcancel"></button>
+                    </p>
                     <p class="hint" id="hint"></p>
                 </div>
             </section>
         </div>
     </main>
 
-    <footer>© <span id="year"></span> Lionel Irakoze</footer>
+    <footer class="site-footer">
+        <div id="socials"></div>
+        <p class="copy">© <span id="year"></span> Lionel Irakoze</p>
+    </footer>
 
     <script>
         var $ = function (s) { return document.querySelector(s); };
@@ -535,6 +630,12 @@
                 hint: "Clique sur le terminal pour passer l'animation.",
                 sr: "Erreur 404 : cette page n'existe pas ou a été déplacée. Utilise les boutons pour revenir en arrière ou à l'accueil.",
                 btn: "EN", aria: "Switch to English", photo: "Photo de Lionel Irakoze",
+                report: "Signaler le lien cassé",
+                reportMsg: "Bonjour Lionel, j'ai trouvé un lien cassé sur ton portfolio : ",
+                reportFrom: " (je venais de : ",
+                quick: "Ou va directement à",
+                q: ["Projets", "Tarifs", "FAQ", "Contact"],
+                cd: "Retour automatique à l'accueil dans {n} s.", cancel: "Annuler",
                 lines: [
                     { k: "cmd", t: "open {path}" },
                     { k: "err", t: "Error 404: page introuvable" },
@@ -553,6 +654,12 @@
                 hint: "Click the terminal to skip the animation.",
                 sr: "Error 404: this page doesn't exist or has moved. Use the buttons to go back or to the home page.",
                 btn: "FR", aria: "Passer en français", photo: "Photo of Lionel Irakoze",
+                report: "Report the broken link",
+                reportMsg: "Hello Lionel, I found a broken link on your portfolio: ",
+                reportFrom: " (I came from: ",
+                quick: "Or jump straight to",
+                q: ["Projects", "Pricing", "FAQ", "Contact"],
+                cd: "Automatic return to the home page in {n} s.", cancel: "Cancel",
                 lines: [
                     { k: "cmd", t: "open {path}" },
                     { k: "err", t: "Error 404: page not found" },
@@ -634,6 +741,46 @@
             last.innerHTML = promptHTML() + '<span class="cursor"></span>';
             screen.appendChild(last);
             actions.classList.add("show");
+            $("#quick").hidden = false;
+            requestAnimationFrame(function () { $("#quick").classList.add("show"); });
+            startCountdown();
+        }
+
+        // ----- Retour automatique à l'accueil (annulable) -----
+        var REDIRECT_SECONDS = 15;
+        var left = REDIRECT_SECONDS, timer = null, cdStarted = false, cdCancelled = false;
+
+        function renderCountdown() {
+            var box = $("#redirect");
+            if (cdCancelled || !cdStarted) { box.hidden = true; return; }
+            var d = TXT[lang];
+            box.hidden = false;
+            $("#cdtext").innerHTML = d.cd.replace("{n}", "<b>" + left + "</b>");
+            $("#cdcancel").textContent = d.cancel;
+        }
+        function stopCountdown() { cdCancelled = true; clearInterval(timer); renderCountdown(); }
+        function startCountdown() {
+            if (cdStarted || cdCancelled) return;
+            cdStarted = true;
+            renderCountdown();
+            timer = setInterval(function () {
+                left--;
+                if (left <= 0) { clearInterval(timer); location.href = "index.html"; return; }
+                renderCountdown();
+            }, 1000);
+        }
+        $("#cdcancel").addEventListener("click", stopCountdown);
+
+        // Signalement WhatsApp : adresse cassée + page d'origine si elle vient de ce site
+        function updateReport() {
+            var d = TXT[lang], msg = d.reportMsg + path;
+            try {
+                if (document.referrer && new URL(document.referrer).origin === location.origin) {
+                    msg += d.reportFrom + document.referrer + ")";
+                }
+            } catch (e) { }
+            $("#report").href = "https://wa.me/25776672387?text=" + encodeURIComponent(msg);
+            $("#report").textContent = d.report;
         }
 
         function applyLang(l, animate) {
@@ -651,7 +798,12 @@
             b.textContent = d.btn; b.setAttribute("aria-label", d.aria);
             var img = document.querySelector(".avatar img");
             if (img) img.alt = d.photo;
+            $("#quick-title").textContent = d.quick;
+            ["q1", "q2", "q3", "q4"].forEach(function (id, i) { $("#" + id).textContent = d.q[i]; });
+            updateReport();
+            renderCountdown();
             try { localStorage.setItem("lang", l); } catch (e) { }
+            document.dispatchEvent(new CustomEvent("langchange", { detail: l }));
             play(animate);
         }
 
@@ -669,6 +821,7 @@
         $("#year").textContent = new Date().getFullYear();
         applyLang(lang, !reduce);
     </script>
+    <script src="social.js"></script>
 </body>
 
 </html>

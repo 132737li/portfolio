@@ -35,7 +35,7 @@
         }
 
         .t-main {
-            min-height: calc(100vh - 140px);
+            min-height: calc(100vh - 220px);
             display: grid;
             place-items: center;
             padding: 30px 5vw 50px;
@@ -158,10 +158,6 @@
             color: #0b2e1a;
         }
 
-        footer {
-            padding-top: 0;
-        }
-
         @media (prefers-reduced-motion: reduce) {
             .t-card {
                 animation: none;
@@ -216,7 +212,10 @@
         </section>
     </main>
 
-    <footer>© <span id="year"></span> Lionel Irakoze</footer>
+    <footer class="site-footer">
+        <div id="socials"></div>
+        <p class="copy">© <span id="year"></span> Lionel Irakoze</p>
+    </footer>
 
     <script>
         const D = {
@@ -262,6 +261,7 @@
             const b = document.getElementById("lang-toggle");
             b.textContent = d.btn; b.setAttribute("aria-label", d.aria);
             try { localStorage.setItem("lang", l); } catch (e) { }
+            document.dispatchEvent(new CustomEvent("langchange", { detail: l }));
         }
         document.getElementById("lang-toggle").addEventListener("click", () => apply(lang === "fr" ? "en" : "fr"));
 
@@ -282,6 +282,7 @@
         document.getElementById("year").textContent = new Date().getFullYear();
         apply(lang);
     </script>
+    <script src="social.js"></script>
 </body>
 
 </html>
