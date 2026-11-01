@@ -4,72 +4,356 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Nécessaire : cette page s'affiche à n'importe quelle adresse du site -->
-    <base href="/portfolio/" />
-    <title>Page introuvable — Lionel Irakoze</title>
+    <title>Page introuvable | Lionel Irakoze</title>
     <meta name="robots" content="noindex" />
     <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230e0e10'/%3E%3Ctext x='50' y='70' font-size='62' font-family='Arial' font-weight='700' text-anchor='middle' fill='%23ffb02e'%3EL%3C/text%3E%3C/svg%3E" />
+
     <script>
-        try {
-            const t = localStorage.getItem("theme");
-            if (t) document.documentElement.setAttribute("data-theme", t);
-        } catch (e) { }
+        // Sur GitHub Pages, les liens relatifs doivent partir de /portfolio/
+        // (cette page s'affiche à n'importe quelle adresse du site).
+        if (location.pathname.indexOf("/portfolio/") === 0) {
+            var b = document.createElement("base");
+            b.href = "/portfolio/";
+            document.head.appendChild(b);
+        }
     </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,700;1,400&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@500;700&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="extras.css" />
     <style>
-        .t-top {
+        :root {
+            --bg: #0b0d12;
+            --panel: #12151c;
+            --bar: #0e1118;
+            --line: #232836;
+            --text: #e6e8ee;
+            --muted: #8b93a7;
+            --gold: #ffb02e;
+            --green: #4ade80;
+            --red: #ff6b6b;
+            --blue: #7dd3fc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+            color: var(--text);
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 15% 0%, #ffb02e18, transparent 45%),
+                radial-gradient(#ffffff09 1px, transparent 1px);
+            background-size: auto, 26px 26px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+        }
+
+        /* ===== En-tête ===== */
+        .top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 18px 5vw;
+        }
+
+        .logo {
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--gold);
+        }
+
+        .lang {
+            height: 34px;
+            padding: 0 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: .25s;
+            border: 1px solid #ffffff55;
+            background: transparent;
+            color: #fff;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .lang:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: #111;
+        }
+
+        /* ===== Contenu ===== */
+        main {
+            flex: 1;
+            display: grid;
+            place-items: center;
+            padding: 6px 5vw 40px;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 940px;
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .me {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            position: relative;
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex: none;
+            border: 3px solid var(--gold);
+            background: var(--gold);
+            display: grid;
+            place-items: center;
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-size: 26px;
+            color: #111;
+        }
+
+        /* zoom sur le visage : la photo est agrandie et décalée dans le cercle */
+        .avatar img {
+            position: absolute;
+            top: 0;
+            left: -42%;
+            width: 200%;
+            height: auto;
+            max-width: none;
+        }
+
+        .who h1 {
+            font-family: "Poppins", sans-serif;
+            font-size: 20px;
+            line-height: 1.2;
+        }
+
+        .who p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .who p.role {
+            color: var(--gold);
+        }
+
+        .code404 {
+            position: relative;
+            display: inline-block;
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-size: clamp(72px, 15vw, 120px);
+            line-height: 1;
+            letter-spacing: 4px;
+            color: var(--gold);
+        }
+
+        .code404::before,
+        .code404::after {
+            content: attr(data-t);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            opacity: 0;
+        }
+
+        .code404::before {
+            color: var(--red);
+            clip-path: inset(0 0 55% 0);
+            animation: g1 4s steps(1) infinite;
+        }
+
+        .code404::after {
+            color: var(--blue);
+            clip-path: inset(55% 0 0 0);
+            animation: g2 4s steps(1) infinite;
+        }
+
+        @keyframes g1 {
+
+            0%,
+            91%,
+            100% {
+                opacity: 0;
+            }
+
+            92% {
+                opacity: .9;
+                transform: translate(-5px, 1px);
+            }
+
+            95% {
+                opacity: .9;
+                transform: translate(4px, -1px);
+            }
+
+            97% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes g2 {
+
+            0%,
+            92%,
+            100% {
+                opacity: 0;
+            }
+
+            93% {
+                opacity: .9;
+                transform: translate(5px, -1px);
+            }
+
+            96% {
+                opacity: .9;
+                transform: translate(-4px, 1px);
+            }
+
+            98% {
+                opacity: 0;
+            }
+        }
+
+        /* ===== Terminal ===== */
+        .term {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px #000a;
+        }
+
+        .bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--bar);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .dot.r {
+            background: #ff5f57;
+        }
+
+        .dot.y {
+            background: #febc2e;
+        }
+
+        .dot.g {
+            background: #28c840;
+        }
+
+        .bar-title {
+            margin-left: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .screen {
+            padding: 20px 22px 8px;
+            min-height: 270px;
+            font-size: 14px;
+            line-height: 1.85;
+            overflow-wrap: anywhere;
+            cursor: default;
+        }
+
+        .line {
+            display: block;
+        }
+
+        .prompt {
+            color: var(--green);
+        }
+
+        .dir {
+            color: var(--blue);
+        }
+
+        .sign {
+            color: var(--muted);
+        }
+
+        .cmd {
             color: var(--text);
         }
 
-        .t-logo {
-            color: inherit;
-            text-decoration: none;
+        .err {
+            color: var(--red);
             font-weight: 700;
-            letter-spacing: 3px;
         }
 
-        .t-logo span {
-            color: var(--accent);
+        .out {
+            color: var(--muted);
         }
 
-        .t-tools {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .ok {
+            color: var(--green);
         }
 
-        .t-main {
-            min-height: calc(100vh - 140px);
-            display: grid;
-            place-items: center;
-            padding: 20px 5vw 50px;
+        .path {
+            color: var(--gold);
         }
 
-        .t-card {
-            width: 100%;
-            max-width: 640px;
-            text-align: center;
-            padding: 44px 30px;
-            border-radius: 24px;
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            box-shadow: 0 18px 50px #0003;
-            animation: rise .6s ease both;
+        .fade {
+            animation: in .3s ease both;
         }
 
-        @keyframes rise {
+        @keyframes in {
             from {
                 opacity: 0;
-                transform: translateY(24px);
+                transform: translateY(5px);
             }
 
             to {
@@ -78,223 +362,312 @@
             }
         }
 
-        .code404 {
-            font-size: clamp(80px, 22vw, 140px);
-            font-weight: 700;
-            line-height: 1;
-            letter-spacing: 6px;
-            background: linear-gradient(135deg, var(--accent), #ff7e5f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: float 3.5s ease-in-out infinite;
+        .cursor {
+            display: inline-block;
+            width: .6em;
+            height: 1.1em;
+            vertical-align: -0.2em;
+            margin-left: 2px;
+            background: var(--gold);
+            animation: blink 1s steps(1) infinite;
         }
 
-        @keyframes float {
+        @keyframes blink {
             50% {
-                transform: translateY(-8px);
+                opacity: 0;
             }
         }
 
-        .t-card h1 {
-            font-size: clamp(22px, 5vw, 30px);
-            margin: 10px 0 12px;
+        .foot {
+            padding: 6px 22px 22px;
         }
 
-        .t-lead {
-            line-height: 1.8;
-            opacity: .88;
-            margin-bottom: 14px;
-            font-size: 15px;
-        }
-
-        .t-path {
-            display: inline-block;
-            max-width: 100%;
-            overflow-wrap: anywhere;
-            margin-bottom: 26px;
-            padding: 6px 14px;
-            border-radius: 10px;
-            font-size: 12px;
-            background: var(--bg);
-            border: 1px dashed var(--border);
-            opacity: .85;
-        }
-
-        .t-card .actions {
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .t-card button.btn {
-            font-family: inherit;
-        }
-
-        .t-links-title {
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: .7;
-            margin-bottom: 12px;
-        }
-
-        .t-links {
+        .actions {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s;
         }
 
-        .t-links a {
-            padding: 9px 20px;
+        .actions.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 22px;
             border-radius: 40px;
-            font-size: 13px;
-            text-decoration: none;
-            color: var(--text);
-            border: 1px solid var(--border);
+            cursor: pointer;
             transition: .25s;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid var(--gold);
+            background: var(--gold);
+            color: #111;
         }
 
-        .t-links a:hover {
-            border-color: var(--accent);
-            color: var(--accent-text);
+        .btn:hover {
             transform: translateY(-2px);
         }
 
-        .t-note {
-            margin-top: 26px;
-            font-size: 12px;
-            opacity: .75;
+        .btn.ghost {
+            background: transparent;
+            color: var(--text);
+            border-color: #ffffff44;
         }
 
-        .t-note a {
-            color: var(--accent-text);
+        .btn.ghost:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .hint {
+            margin-top: 14px;
+            font-size: 11px;
+            color: var(--muted);
         }
 
         footer {
-            padding-top: 0;
+            text-align: center;
+            padding: 0 5vw 26px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                gap: 14px;
+            }
+
+            .screen {
+                font-size: 12.5px;
+                padding: 16px 16px 6px;
+                min-height: 300px;
+            }
+
+            .foot {
+                padding: 6px 16px 18px;
+            }
+
+            .bar-title {
+                font-size: 11px;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
 
-            .t-card,
-            .code404 {
+            .code404::before,
+            .code404::after,
+            .cursor,
+            .fade {
                 animation: none;
+            }
+
+            .actions {
+                transition: none;
             }
         }
     </style>
 </head>
 
 <body>
-    <header class="t-top">
-        <a href="index.html" class="t-logo">LIONEL<span>.</span></a>
-        <div class="t-tools">
-            <button id="lang-toggle" class="lang-toggle" aria-label="Changer de langue">EN</button>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Changer de thème">☾</button>
-        </div>
+    <header class="top">
+        <a href="index.html" class="logo">LIONEL<span>.</span></a>
+        <button type="button" id="lang" class="lang" aria-label="Switch to English">EN</button>
     </header>
 
-    <main class="t-main">
-        <section class="t-card">
-            <div class="code404" aria-hidden="true">404</div>
-            <h1 data-i18n="title">Oups, cette page n'existe pas</h1>
-            <p class="t-lead" data-i18n="lead">Le lien est peut-être cassé, ou la page a été déplacée. Pas de panique :
-                tu peux revenir en arrière ou repartir de l'accueil.</p>
-            <code class="t-path" id="path"></code>
-
-            <div class="actions center">
-                <button type="button" class="btn ghost dark-text" id="back" data-i18n="back">← Page précédente</button>
-                <a class="btn" href="index.html" data-i18n="home">Retour à l'accueil</a>
+    <main>
+        <div class="wrap">
+            <div class="hero">
+                <div class="me">
+                    <div class="avatar">
+                        <span>LI</span>
+                        <img src="images/photo.jpg" alt="Photo de Lionel Irakoze" onerror="this.remove()" />
+                    </div>
+                    <div class="who">
+                        <h1>Lionel Irakoze</h1>
+                        <p class="role" id="role">Développeur Web et Mobile</p>
+                        <p id="free">Freelance · Bujumbura</p>
+                    </div>
+                </div>
+                <div class="code404 glitch" data-t="404" aria-hidden="true">404</div>
             </div>
 
-            <p class="t-links-title" data-i18n="quick">Ou va directement à</p>
-            <div class="t-links">
-                <a href="index.html#projects" data-i18n="l1">Projets</a>
-                <a href="index.html#pricing" data-i18n="l2">Tarifs</a>
-                <a href="index.html#faq" data-i18n="l3">FAQ</a>
-                <a href="index.html#contact" data-i18n="l4">Contact</a>
-            </div>
-
-            <p class="t-note"><span data-i18n="note">Un lien cassé sur mon site ?</span> <a id="wa"
-                    href="https://wa.me/25776672387" target="_blank" rel="noopener" data-i18n="report">Préviens-moi sur
-                    WhatsApp</a></p>
-        </section>
+            <section class="term">
+                <div class="bar" aria-hidden="true">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <span class="bar-title">lionel@portfolio: ~ (bash)</span>
+                </div>
+                <div class="screen" id="screen" aria-hidden="true"></div>
+                <p class="sr-only" id="sr"></p>
+                <div class="foot">
+                    <div class="actions" id="actions">
+                        <button type="button" class="btn ghost" id="back">← Page précédente</button>
+                        <a class="btn" id="home" href="index.html">Retour à l'accueil</a>
+                    </div>
+                    <p class="hint" id="hint"></p>
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer>© <span id="year"></span> Lionel Irakoze</footer>
 
     <script>
-        const D = {
+        var $ = function (s) { return document.querySelector(s); };
+
+        // Adresse demandée, sans le préfixe /portfolio/
+        var path = location.pathname.replace(/^\/portfolio\//, "/") + location.search;
+        if (path.length > 60) path = path.slice(0, 57) + "...";
+
+        var TXT = {
             fr: {
-                title: "Oups, cette page n'existe pas",
-                lead: "Le lien est peut-être cassé, ou la page a été déplacée. Pas de panique : tu peux revenir en arrière ou repartir de l'accueil.",
+                title: "Page introuvable | Lionel Irakoze",
+                role: "Développeur Web et Mobile", free: "Freelance · Bujumbura",
                 back: "← Page précédente", home: "Retour à l'accueil",
-                quick: "Ou va directement à",
-                l1: "Projets", l2: "Tarifs", l3: "FAQ", l4: "Contact",
-                note: "Un lien cassé sur mon site ?", report: "Préviens-moi sur WhatsApp",
-                pageTitle: "Page introuvable — Lionel Irakoze",
-                waMsg: "Bonjour Lionel, j'ai trouvé un lien cassé sur ton portfolio : ",
-                btn: "EN", aria: "Switch to English",
+                hint: "Clique sur le terminal pour passer l'animation.",
+                sr: "Erreur 404 : cette page n'existe pas ou a été déplacée. Utilise les boutons pour revenir en arrière ou à l'accueil.",
+                btn: "EN", aria: "Switch to English", photo: "Photo de Lionel Irakoze",
+                lines: [
+                    { k: "cmd", t: "open {path}" },
+                    { k: "err", t: "Error 404: page introuvable" },
+                    { k: "out", t: "SyntaxError : la page « {path} » a pris la fuite." },
+                    { k: "cmd", t: "git blame" },
+                    { k: "out", t: "Coupable probable : un lien cassé. Pas de panique, ce n'est pas toi." },
+                    { k: "out", t: "// TODO : créer cette page. Un jour." },
+                    { k: "cmd", t: "npm run depanner" },
+                    { k: "ok", t: "✔ Réparé : retourne en arrière ou repars de l'accueil." }
+                ]
             },
             en: {
-                title: "Oops, this page doesn't exist",
-                lead: "The link may be broken, or the page may have moved. No worries: you can go back or start again from the home page.",
+                title: "Page not found | Lionel Irakoze",
+                role: "Web and Mobile Developer", free: "Freelance · Bujumbura",
                 back: "← Previous page", home: "Back to home",
-                quick: "Or jump straight to",
-                l1: "Projects", l2: "Pricing", l3: "FAQ", l4: "Contact",
-                note: "Found a broken link on my site?", report: "Tell me on WhatsApp",
-                pageTitle: "Page not found — Lionel Irakoze",
-                waMsg: "Hello Lionel, I found a broken link on your portfolio: ",
-                btn: "FR", aria: "Passer en français",
-            },
+                hint: "Click the terminal to skip the animation.",
+                sr: "Error 404: this page doesn't exist or has moved. Use the buttons to go back or to the home page.",
+                btn: "FR", aria: "Passer en français", photo: "Photo of Lionel Irakoze",
+                lines: [
+                    { k: "cmd", t: "open {path}" },
+                    { k: "err", t: "Error 404: page not found" },
+                    { k: "out", t: "SyntaxError: the page “{path}” ran away." },
+                    { k: "cmd", t: "git blame" },
+                    { k: "out", t: "Probable culprit: a broken link. Don't panic, it's not you." },
+                    { k: "out", t: "// TODO: create this page. Someday." },
+                    { k: "cmd", t: "npm run fix" },
+                    { k: "ok", t: "✔ Fixed: go back, or start again from the home page." }
+                ]
+            }
         };
 
-        let lang = "fr";
+        var lang = "fr";
         try {
             lang = localStorage.getItem("lang") ||
-                ((navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en");
+                ((navigator.language || "fr").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
         } catch (e) { }
+        if (!TXT[lang]) lang = "fr";
 
-        const shownPath = location.pathname.replace(/^\/portfolio\//, "/") + location.search;
-        document.getElementById("path").textContent = shownPath;
+        var screen = $("#screen"), actions = $("#actions");
+        var runId = 0, skip = false;
+        var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 
-        function apply(l) {
-            lang = l;
-            const d = D[l];
-            document.documentElement.lang = l;
-            document.title = d.pageTitle;
-            document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = d[el.dataset.i18n]; });
-            document.getElementById("wa").href = "https://wa.me/25776672387?text=" + encodeURIComponent(d.waMsg + shownPath);
-            const b = document.getElementById("lang-toggle");
-            b.textContent = d.btn; b.setAttribute("aria-label", d.aria);
-            try { localStorage.setItem("lang", l); } catch (e) { }
+        function addText(parent, text) {
+            var parts = text.split("{path}");
+            parts.forEach(function (part, i) {
+                parent.appendChild(document.createTextNode(part));
+                if (i < parts.length - 1) {
+                    var s = document.createElement("span");
+                    s.className = "path"; s.textContent = path;
+                    parent.appendChild(s);
+                }
+            });
         }
-        document.getElementById("lang-toggle").addEventListener("click", () => apply(lang === "fr" ? "en" : "fr"));
 
-        // Bouton retour : revient à la page précédente si elle vient de ce site, sinon va à l'accueil
-        document.getElementById("back").addEventListener("click", () => {
-            let sameSite = false;
+        function promptHTML() {
+            return '<span class="prompt">lionel@portfolio</span><span class="dir">:~</span><span class="sign">$ </span>';
+        }
+
+        async function play(animate) {
+            var id = ++runId, d = TXT[lang];
+            skip = !animate;
+            screen.innerHTML = "";
+            actions.classList.remove("show");
+
+            for (var n = 0; n < d.lines.length; n++) {
+                if (id !== runId) return;
+                var L = d.lines[n];
+                var row = document.createElement("div");
+                row.className = "line" + (skip ? "" : " fade");
+
+                if (L.k === "cmd") {
+                    row.innerHTML = promptHTML();
+                    var span = document.createElement("span");
+                    span.className = "cmd";
+                    row.appendChild(span);
+                    screen.appendChild(row);
+                    var full = L.t.replace("{path}", path);
+                    for (var i = 1; i <= full.length; i++) {
+                        if (id !== runId) return;
+                        if (skip) { span.textContent = full; break; }
+                        span.textContent = full.slice(0, i);
+                        await sleep(34);
+                    }
+                    if (!skip) await sleep(260);
+                } else {
+                    row.classList.add(L.k);
+                    addText(row, L.t);
+                    screen.appendChild(row);
+                    if (!skip) await sleep(380);
+                }
+            }
+
+            if (id !== runId) return;
+            var last = document.createElement("div");
+            last.className = "line";
+            last.innerHTML = promptHTML() + '<span class="cursor"></span>';
+            screen.appendChild(last);
+            actions.classList.add("show");
+        }
+
+        function applyLang(l, animate) {
+            lang = l;
+            var d = TXT[l];
+            document.documentElement.lang = l;
+            document.title = d.title;
+            $("#role").textContent = d.role;
+            $("#free").textContent = d.free;
+            $("#back").textContent = d.back;
+            $("#home").textContent = d.home;
+            $("#hint").textContent = d.hint;
+            $("#sr").textContent = d.sr;
+            var b = $("#lang");
+            b.textContent = d.btn; b.setAttribute("aria-label", d.aria);
+            var img = document.querySelector(".avatar img");
+            if (img) img.alt = d.photo;
+            try { localStorage.setItem("lang", l); } catch (e) { }
+            play(animate);
+        }
+
+        $("#lang").addEventListener("click", function () { applyLang(lang === "fr" ? "en" : "fr", false); });
+        screen.addEventListener("click", function () { skip = true; });
+
+        // Bouton retour : page précédente si elle vient de ce site, sinon accueil
+        $("#back").addEventListener("click", function () {
+            var sameSite = false;
             try { sameSite = document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) { }
             if (history.length > 1 && sameSite) history.back();
             else location.href = "index.html";
         });
 
-        // Thème
-        const tb = document.getElementById("theme-toggle");
-        function setTheme(t) {
-            document.documentElement.setAttribute("data-theme", t);
-            tb.textContent = t === "light" ? "☀" : "☾";
-            try { localStorage.setItem("theme", t); } catch (e) { }
-        }
-        let theme = "dark";
-        try {
-            theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-        } catch (e) { }
-        setTheme(theme);
-        tb.addEventListener("click", () => setTheme(document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light"));
-
-        document.getElementById("year").textContent = new Date().getFullYear();
-        apply(lang);
+        $("#year").textContent = new Date().getFullYear();
+        applyLang(lang, !reduce);
     </script>
 </body>
 
