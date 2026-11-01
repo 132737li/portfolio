@@ -1,0 +1,30 @@
+/* Correctif du slider : les boutons ne sont plus cachés par la barre de progression,
+   et les cartes se font glisser (souris ou doigt). Chargé APRÈS style.css. */
+#home.stage{ position:relative; overflow:hidden; }
+
+/* Barre de contrôle : toujours en bas, dans sa propre bande */
+#home .controls{
+  position:absolute !important; top:auto !important;
+  left:5vw !important; right:5vw !important; bottom:18px !important;
+  z-index:6; margin:0 !important;
+}
+/* Textes + boutons : ancrés au-dessus de la barre, jamais dessous */
+#home .details{
+  top:auto !important; bottom:92px !important;
+  max-height:calc(100% - 150px); z-index:8;
+}
+#home .details h1,#home #d-title{ font-size:clamp(32px, 9vh, 84px) !important; line-height:1.02 !important; }
+#home .details .desc,#home #d-desc{ font-size:clamp(12px, 2.2vh, 16px) !important; }
+#home .details .actions{ margin-top:clamp(10px, 2.4vh, 24px) !important; position:relative; z-index:9; }
+#home .details .btn{ position:relative; z-index:9; }
+
+/* Cartes : zone de glissement */
+#cards{ cursor:grab; touch-action:pan-y; -webkit-user-select:none; user-select:none; }
+#home.dragging #cards, #home.dragging{ cursor:grabbing; }
+#cards img{ -webkit-user-drag:none; user-drag:none; pointer-events:none; }
+
+/* Petit écran : boutons de défilement bien visibles */
+#home .controls button{ position:relative; z-index:7; }
+@media (max-width:700px){
+  #home .details{ bottom:96px !important; }
+}
