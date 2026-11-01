@@ -9,14 +9,14 @@ const data = [
     category: "Boutique en ligne",
     title: "Berlly Boutique",
     desc: "Boutique e-commerce avec backend Node.js / Express : catalogue, panier et commandes.",
-    bg: "linear-gradient(135deg,#1d2b64,#f8cdda)",
+    bg: "url(images/berlly.png)",
     link: "https://132737li.github.io/Berlly_Boutique/",
   },
   {
     category: "Site vitrine",
     title: "Flower Shop",
     desc: "Site de fleurs en HTML, CSS et JavaScript avec panier et commande via WhatsApp.",
-    bg: "linear-gradient(135deg,#ff758c,#ff7eb3 50%,#7a1f4d)",
+    bg: "url(images/flower-shop.png)",
     link: "#",
   },
   {
@@ -51,14 +51,14 @@ const data = [
     category: "Site romantique",
     title: "Ltn",
     desc: "Un site romantique pensé comme un cadeau numérique.",
-    bg: "linear-gradient(135deg,#ff758c,#c2185b)",
+    bg: "url(images/ltn.png)",
     link: "https://132737li.github.io/Ltn/",
   },
   {
     category: "Intelligence artificielle",
     title: "LionFlow AI",
     desc: "Projet autour de l'IA et de l'automatisation.",
-    bg: "linear-gradient(135deg,#141e30,#243b55 60%,#7f00ff)",
+    bg: "url(images/lionflow-ai.png)",
     link: "https://132737li.github.io/lionflow-ai/",
   },
 ];
