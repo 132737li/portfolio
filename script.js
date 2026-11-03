@@ -6,17 +6,29 @@ const FORMSPREE_ID = "moeekjwo";
 // Remplace "bg" par une image : "url('images/mon-projet.jpg') center/cover"
 const data = [
   {
+    category: "Application de gestion",
+    title: "Isoko AI",
+    desc: "Application web (PWA) de gestion de stock et de ventes pour commerçants : fonctionne sans internet, en BIF, avec publicités générées par IA.",
+    bg: "linear-gradient(135deg,#042f2e,#0f766e 60%,#5eead4)",
+    link: "https://isokoai-woad.vercel.app/",
+    // Traduction anglaise (affichée quand le site est en EN). Les autres projets sont traduits par i18n.js.
+    en: {
+      category: "Management app",
+      desc: "Web app (PWA) for stock and sales management for shopkeepers: works offline, in BIF, with AI-generated ads.",
+    },
+  },
+  {
     category: "Boutique en ligne",
     title: "Berlly Boutique",
     desc: "Boutique e-commerce avec backend Node.js / Express : catalogue, panier et commandes.",
-    bg: "url(images/berlly.png)",
+    bg: "url(images/berlly.webp)",
     link: "https://132737li.github.io/Berlly_Boutique/",
   },
   {
     category: "Site vitrine",
     title: "Flower Shop",
     desc: "Site de fleurs en HTML, CSS et JavaScript avec panier et commande via WhatsApp.",
-    bg: "url(images/flower-shop.png)",
+    bg: "url(images/flower-shop.webp)",
     link: "#",
   },
   {
@@ -47,18 +59,18 @@ const data = [
     bg: "linear-gradient(135deg,#0b3d2e,#11998e 60%,#38ef7d)",
     link: "#",
   },
-    {
+  {
     category: "Site romantique",
     title: "Ltn",
     desc: "Un site romantique pensé comme un cadeau numérique.",
-    bg: "url(images/ltn.png)",
+    bg: "url(images/ltn.webp)",
     link: "https://132737li.github.io/Ltn/",
   },
   {
     category: "Intelligence artificielle",
     title: "LionFlow AI",
     desc: "Projet autour de l'IA et de l'automatisation.",
-    bg: "url(images/lionflow-ai.png)",
+    bg: "url(images/lionflow-ai.webp)",
     link: "https://132737li.github.io/lionflow-ai/",
   },
 ];
@@ -66,6 +78,8 @@ const data = [
 const DURATION = 6; // secondes entre chaque slide
 const $ = (s) => document.querySelector(s);
 const pad = (n) => String(n + 1).padStart(2, "0");
+// Texte d'un projet dans la langue du site (si une traduction "en" existe, sinon le français)
+const tr = (d, k) => (window.LANG === "en" && d.en && d.en[k]) || d[k];
 
 const stage = $("#home"), bg = $("#bg"), cardsEl = $("#cards"), details = $("#details");
 const bar = $("#bar");
@@ -85,16 +99,16 @@ function renderCards() {
     .slice(1)
     .map((i) => `
       <div class="card" data-i="${i}" style="background:${data[i].bg}">
-        <div class="card-info"><small>${data[i].category}</small><h4>${data[i].title}</h4></div>
+        <div class="card-info"><small>${tr(data[i], "category")}</small><h4>${data[i].title}</h4></div>
       </div>`)
     .join("");
 }
 
 function setDetails(i) {
   const d = data[i];
-  $("#d-cat").textContent = d.category;
+  $("#d-cat").textContent = tr(d, "category");
   $("#d-title").textContent = d.title;
-  $("#d-desc").textContent = d.desc;
+  $("#d-desc").textContent = tr(d, "desc");
   $("#d-link").href = d.link;
   $("#num").textContent = pad(i);
 }
@@ -183,12 +197,12 @@ const themeBtn = $("#theme-toggle");
 function applyTheme(t) {
   document.documentElement.setAttribute("data-theme", t);
   themeBtn.textContent = t === "light" ? "☀" : "☾";
-  try { localStorage.setItem("theme", t); } catch (e) {}
+  try { localStorage.setItem("theme", t); } catch (e) { }
 }
 
 (function initTheme() {
   let saved = null;
-  try { saved = localStorage.getItem("theme"); } catch (e) {}
+  try { saved = localStorage.getItem("theme"); } catch (e) { }
   const preferred = saved || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
   applyTheme(preferred);
 })();
@@ -272,6 +286,12 @@ form.addEventListener("submit", async (e) => {
 });
 
 /* ================= INIT ================= */
+// Changement de langue : on réécrit les textes du slider (carte, catégorie, description)
+document.addEventListener("langchange", () => {
+  renderCards();
+  setDetails(order[0]);
+});
+
 $("#total").textContent = String(data.length).padStart(2, "0");
 $("#year").textContent = new Date().getFullYear();
 bg.style.background = data[order[0]].bg;

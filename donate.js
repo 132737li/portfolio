@@ -1,129 +1,98 @@
-// ====== RÉGLAGES DU DON ======
+// ====== DON (modifie ici) ======
+// Le lien de paiement sécurisé Ultraner. Plus aucun lien WhatsApp dans cette fenêtre.
 const DONATE = {
   link: "https://ultraner.com/pay/pl_689b50192eb588b266fbed28c356dca7",
-  name: "Ultraner",
-  whatsapp: "25776672387",
-};
-
-const DONATE_UI = {
-  fr: {
-    hero: "☕ Faire un don",
-    footer: "Soutenir mon travail",
-    title: "Soutenir mon travail",
-    text: "Ce portfolio et mes projets sont faits avec passion. Si mon travail t'a plu ou t'a été utile, tu peux m'encourager avec un petit don. C'est totalement libre : chaque geste m'aide à continuer à apprendre et à créer.",
-    give: "Faire un don via ",
-    // wa: "Me contacter sur WhatsApp",
-    //waDonate: "Faire un don : me contacter sur WhatsApp",
-    waMsg: "Bonjour Lionel, j'aimerais soutenir ton travail par un don. Comment faire ?",
-    note: "Un don est un geste volontaire, il ne donne pas droit à un service. Pour un projet, ",
-    noteLink: "voir mes tarifs",
-    close: "Fermer",
-  },
-  en: {
-    hero: "☕ Support me",
-    footer: "Support my work",
-    title: "Support my work",
-    text: "This portfolio and my projects are made with passion. If you liked my work or found it useful, you can encourage me with a small donation. It's completely optional: every gesture helps me keep learning and creating.",
-    give: "Donate via ",
-    //wa: "Message me on WhatsApp",
-    //waDonate: "Donate: message me on WhatsApp",
-    waMsg: "Hello Lionel, I'd like to support your work with a donation. How can I do it?",
-    note: "A donation is a voluntary gesture and doesn't entitle you to a service. For a project, ",
-    noteLink: "see my pricing",
-    close: "Close",
-  },
 };
 
 (function () {
-  const triggers = document.querySelectorAll("[data-donate]");
-  if (!triggers.length) return;
-
-  let lastFocus = null;
-
-  // Construction de la fenêtre
-  const overlay = document.createElement("div");
-  overlay.className = "d-overlay";
-  overlay.setAttribute("aria-hidden", "true");
-  overlay.innerHTML =
-    '<div class="d-modal" role="dialog" aria-modal="true" aria-labelledby="d-title" tabindex="-1">' +
-      '<button type="button" class="d-close" id="d-close">×</button>' +
-      '<div class="d-heart" aria-hidden="true">🍩🥯☕</div>' +
-      '<h3 id="d-title"></h3>' +
-      '<p id="d-text"></p>' +
-      '<div class="d-actions" id="d-actions"></div>' +
-      '<p class="d-note" id="d-note"></p>' +
-    "</div>";
-  document.body.appendChild(overlay);
-
-  const modal = overlay.querySelector(".d-modal");
-  const closeBtn = overlay.querySelector("#d-close");
-
-  const link = (cls, text, href) => {
-    const a = document.createElement("a");
-    a.className = cls; a.textContent = text; a.href = href;
-    a.target = "_blank"; a.rel = "noopener";
-    return a;
+  var TXT = {
+    fr: {
+      title: "Soutenir mon travail",
+      text: "Si mes projets te plaisent ou t'aident, tu peux m'encourager par un don. Chaque contribution m'aide à continuer d'apprendre et à créer de nouveaux projets. Merci du fond du cœur !",
+      pay: "Faire un don",
+      note: "Paiement sécurisé sur Ultraner. Tu choisis le montant sur la page suivante.",
+      close: "Fermer",
+    },
+    en: {
+      title: "Support my work",
+      text: "If you like my projects or they help you, you can encourage me with a donation. Every contribution helps me keep learning and building new projects. Thank you so much!",
+      pay: "Make a donation",
+      note: "Secure payment on Ultraner. You choose the amount on the next page.",
+      close: "Close",
+    },
   };
 
-  function render() {
-    const L = window.LANG === "en" ? "en" : "fr";
-    const ui = DONATE_UI[L];
-    //const waHref = "https://wa.me/" + DONATE.whatsapp + "?text=" + encodeURIComponent(ui.waMsg);
+  var css =
+    ".dn-back{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;" +
+      "padding:20px;background:#000a;backdrop-filter:blur(4px)}" +
+    ".dn-back.open{display:flex;animation:dnfade .25s ease both}" +
+    ".dn-box{position:relative;width:100%;max-width:440px;padding:34px 28px 26px;border-radius:22px;text-align:center;" +
+      "background:var(--bg2,#17171b);color:var(--text,#fff);border:1px solid var(--border,#ffffff33);" +
+      "box-shadow:0 24px 70px #000a;animation:dnrise .3s ease both}" +
+    ".dn-ico{font-size:38px;line-height:1;margin-bottom:10px}" +
+    ".dn-box h3{font-size:22px;margin:0 0 10px}" +
+    ".dn-box p.dn-text{font-size:14px;line-height:1.75;opacity:.88;margin:0 0 22px}" +
+    ".dn-pay{display:inline-block;padding:13px 30px;border-radius:40px;background:var(--accent,#ffb02e);color:#111;" +
+      "font-weight:600;font-size:14px;text-decoration:none;border:1px solid var(--accent,#ffb02e);transition:transform .2s}" +
+    ".dn-pay:hover{transform:translateY(-2px)}" +
+    ".dn-note{font-size:11px;opacity:.65;margin:14px 0 0}" +
+    ".dn-x{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;border:0;cursor:pointer;" +
+      "background:transparent;color:inherit;font-size:22px;line-height:1;opacity:.7}" +
+    ".dn-x:hover{opacity:1;background:#ffffff18}" +
+    "@keyframes dnfade{from{opacity:0}to{opacity:1}}" +
+    "@keyframes dnrise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}" +
+    "@media (prefers-reduced-motion:reduce){.dn-back.open,.dn-box{animation:none}.dn-pay{transition:none}}";
+  var st = document.createElement("style");
+  st.textContent = css;
+  document.head.appendChild(st);
 
-    triggers.forEach((t) => { t.textContent = ui[t.dataset.donate] || ui.hero; });
-    closeBtn.setAttribute("aria-label", ui.close);
-    overlay.querySelector("#d-title").textContent = ui.title;
-    overlay.querySelector("#d-text").textContent = ui.text;
+  var back = document.createElement("div");
+  back.className = "dn-back";
+  back.innerHTML =
+    '<div class="dn-box" role="dialog" aria-modal="true" aria-labelledby="dn-title">' +
+    '<button type="button" class="dn-x" id="dn-close">&times;</button>' +
+    '<div class="dn-ico" aria-hidden="true">☕</div>' +
+    '<h3 id="dn-title"></h3><p class="dn-text" id="dn-text"></p>' +
+    '<a class="dn-pay" id="dn-pay" target="_blank" rel="noopener noreferrer"></a>' +
+    '<p class="dn-note" id="dn-note"></p></div>';
+  document.body.appendChild(back);
 
-    const actions = overlay.querySelector("#d-actions");
-    actions.innerHTML = "";
-    if (DONATE.link) {
-      actions.appendChild(link("btn", ui.give + DONATE.name, DONATE.link));
-      actions.appendChild(link("btn ghost dark-text", ui.wa, waHref));
-    } else {
-      //actions.appendChild(link("btn wa", ui.waDonate, waHref));
-    }
+  var $ = function (s) { return back.querySelector(s); };
+  var lastFocus = null;
 
-    const note = overlay.querySelector("#d-note");
-    note.textContent = ui.note;
-    const a = document.createElement("a");
-    a.href = "#pricing"; a.textContent = ui.noteLink;
-    a.addEventListener("click", close);
-    note.appendChild(a);
-    note.appendChild(document.createTextNode("."));
+  function fill() {
+    var t = TXT[document.documentElement.lang === "en" ? "en" : "fr"];
+    $("#dn-title").textContent = t.title;
+    $("#dn-text").textContent = t.text;
+    $("#dn-pay").textContent = t.pay;
+    $("#dn-pay").href = DONATE.link;
+    $("#dn-note").textContent = t.note;
+    $("#dn-close").setAttribute("aria-label", t.close);
   }
 
   function open() {
+    fill();
     lastFocus = document.activeElement;
-    overlay.classList.add("open");
-    overlay.setAttribute("aria-hidden", "false");
-    document.body.classList.add("modal-open");
-    closeBtn.focus();
+    back.classList.add("open");
+    document.body.style.overflow = "hidden";
+    $("#dn-pay").focus();
   }
   function close() {
-    overlay.classList.remove("open");
-    overlay.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("modal-open");
+    back.classList.remove("open");
+    document.body.style.overflow = "";
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
-  triggers.forEach((t) => t.addEventListener("click", open));
-  closeBtn.addEventListener("click", close);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-
-  document.addEventListener("keydown", (e) => {
-    if (!overlay.classList.contains("open")) return;
-    if (e.key === "Escape") { close(); return; }
-    // Garde le focus à l'intérieur de la fenêtre (touche Tab)
-    if (e.key === "Tab") {
-      const f = modal.querySelectorAll("a[href], button");
-      if (!f.length) return;
-      const first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
+  // Tous les boutons « don » de la page (accueil, pied de page...)
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-donate]");
+    if (b) { e.preventDefault(); open(); }
   });
-
-  render();
-  document.addEventListener("langchange", render);
+  $("#dn-close").addEventListener("click", close);
+  back.addEventListener("click", function (e) { if (e.target === back) close(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && back.classList.contains("open")) close();
+  });
+  document.addEventListener("langchange", fill);
+  fill();
 })();

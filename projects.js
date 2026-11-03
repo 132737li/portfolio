@@ -5,6 +5,17 @@
 //       une capture automatique du site est utilisée.
 const PROJECTS = [
   {
+    title: "ISOKO AI", type: "ia",
+    desc: {
+      fr: "Application web (PWA) de gestion de stock et de ventes pour commerçants : fonctionne sans internet, en BIF, avec publicités générées par IA.",
+      en: "Web app (PWA) for stock and sales management for shopkeepers: works offline, in BIF, with AI-generated ads.",
+    },
+    tech: ["React", "TypeScript", "Vite", "Supabase", "Tailwind", "Gemini", "PWA"],
+    demo: "https://isokoai-woad.vercel.app/",
+    code: "https://github.com/132737li/isoko-ai",
+    img: "", bg: "linear-gradient(135deg,#042f2e,#0f766e 60%,#5eead4)",
+  },
+  {
     title: "Berlly Boutique", type: "web",
     desc: {
       fr: "Boutique de produits de beauté : catégories, panier, pages produits et contact. Backend Node.js / Express.",

@@ -1,0 +1,75 @@
+/* modern.css — couche de modernisation chargée EN DERNIER.
+   Elle ne remplace aucun fichier : supprime la ligne <link> dans index.html pour revenir à l'ancien rendu. */
+:root {
+    --head: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "DM Sans", system-ui, sans-serif;
+    --muted: #ffffffb3;
+    --radius: 18px;
+    --ring: 0 0 0 3px #ffb02e66;
+}
+[data-theme="light"] { --muted: #17171bb3; --accent-text: #8f4f00; }
+
+html { scroll-padding-top: 76px; }
+body { font-family: var(--body); font-size: 16px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+button, input, textarea { font-family: inherit; }
+
+/* Titres : police d'affichage, plus de MAJUSCULES espacées partout */
+.section h2, .details h1, .logo, .counter, .stats strong, .plan h3, .p-body h3, .service h4 {
+    font-family: var(--head); letter-spacing: -.01em;
+}
+.section h2 { font-size: clamp(30px, 4.6vw, 48px); font-weight: 800; text-transform: none; margin-bottom: 18px; }
+.details h1 { text-transform: none; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+.eyebrow { font-style: normal; font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 15px; }
+.sub-title { text-transform: none; letter-spacing: 0; font-family: var(--head); font-size: clamp(22px, 3vw, 28px); }
+.logo { letter-spacing: .5px; font-size: 20px; font-weight: 800; }
+.nav nav a { text-transform: none; letter-spacing: 0; font-size: 15px; font-weight: 500; }
+
+/* Texte plus lisible */
+.section { padding: clamp(72px, 9vw, 112px) 5vw; }
+.section p, .desc { opacity: 1; color: var(--muted); }
+.section p { line-height: 1.75; }
+.desc { color: #ffffffdd; font-size: clamp(14px, 1.2vw + 10px, 17px); line-height: 1.65; }
+.section .sub { max-width: 60ch; }
+
+/* Boutons */
+.btn { font-size: 15px; font-weight: 700; padding: 13px 28px; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px #0003; }
+.filters button, .cur-switch button { font-size: 14px; }
+
+/* Cartes unifiées : même rayon, ombre douce, bordure fine */
+.p-card, .service, .plan, .c-link, .stats div, .faq-item, .review { border-radius: var(--radius); }
+.p-card, .service, .plan { box-shadow: 0 1px 0 var(--border) inset; }
+.p-type, .card-info small, .who em, .plan-tag { text-transform: none; letter-spacing: .3px; font-size: 12px; }
+.p-body p, .service p { font-size: 14px; opacity: 1; color: var(--muted); }
+.stats span { font-size: 13px; }
+.badge { font-size: 13px; }
+
+/* Formulaire */
+.form input, .form textarea { font-size: 16px; /* évite le zoom auto sur iPhone */ border-radius: 14px; }
+.form input:focus, .form textarea:focus { border-color: var(--accent); box-shadow: var(--ring); }
+.form .row { flex-wrap: wrap; }
+.form .row input { flex: 1 1 200px; }
+.form-status { font-size: 14px; }
+
+/* Accessibilité */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--accent); color: #111; padding: 10px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; }
+.skip:focus { top: 12px; }
+footer { opacity: 1; color: var(--muted); border-top: 1px solid var(--border); font-size: 13px; }
+
+/* Nav : fond flouté quand on scrolle */
+.nav.scrolled { background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--border); }
+
+/* Tablette */
+@media (max-width: 1024px) { .about-grid { gap: 32px; grid-template-columns: 240px 1fr; } .about-photo { width: 240px; height: 300px; } }
+
+/* Mobile */
+@media (max-width: 768px) {
+    .section { padding: 64px 5vw; }
+    .nav .nav-links a { font-size: 17px !important; letter-spacing: 0 !important; }
+    .card-info small { display: none; }
+    .stats div { min-width: 100px; }
+    .actions { gap: 10px; }
+    #home .details .actions .btn { padding: 11px 18px; font-size: 14px; }
+}
+@media (max-width: 380px) { #home .details .donate-btn { display: none; } }
