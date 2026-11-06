@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Générateur de codes d'accès</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #0b0d12;
+            color: #e8eaf0;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            padding: 20px
+        }
+
+        .c {
+            width: 100%;
+            max-width: 560px;
+            background: #12151c;
+            border: 1px solid #ffffff22;
+            border-radius: 20px;
+            padding: 28px
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0 0 6px
+        }
+
+        p {
+            color: #aab0c0;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0 0 18px
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #aab0c0;
+            margin: 14px 0 6px
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            height: 44px;
+            padding: 0 14px;
+            border-radius: 12px;
+            border: 1px solid #ffffff33;
+            background: #0b0d12;
+            color: #fff;
+            font: inherit
+        }
+
+        .row {
+            display: flex;
+            gap: 10px
+        }
+
+        .row input {
+            flex: 1
+        }
+
+        button {
+            height: 44px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 12px;
+            background: #ffb02e;
+            color: #111;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        button.g {
+            background: #ffffff18;
+            color: #fff
+        }
+
+        pre {
+            background: #0b0d12;
+            border: 1px solid #ffffff22;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 12.5px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 16px 0 0;
+            color: #7ee2a8
+        }
+
+        small {
+            display: block;
+            margin-top: 10px;
+            color: #8b93a7
+        }
+    </style>
+</head>
+
+<body>
+    <div class="c">
+        <h1>Générateur de codes d'accès</h1>
+        <p>Ouvre ce fichier sur ton ordinateur (double-clic). Rien n'est envoyé sur internet : le code est transformé en
+            empreinte dans ton navigateur.</p>
+
+        <label for="label">Pour qui ? (juste pour t'y retrouver)</label>
+        <input id="label" placeholder="Ex : Client Jean" />
+
+        <label for="code">Code d'accès</label>
+        <div class="row"><input id="code" placeholder="Au moins 10 caractères" /><button class="g" id="rnd"
+                type="button">Aléatoire</button></div>
+
+        <label for="salt">Salt (doit être identique à celui de gate.js)</label>
+        <input id="salt" value="lionel-irakoze-2026" />
+
+        <div style="margin-top:18px"><button id="go" type="button">Générer la ligne</button></div>
+        <pre id="out">La ligne à coller dans gate.js apparaîtra ici.</pre>
+        <small id="hint"></small>
+    </div>
+    <script>
+        const $ = (id) => document.getElementById(id);
+        async function sha(s) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); }
+        $("rnd").onclick = () => { const a = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"; const r = crypto.getRandomValues(new Uint32Array(12)); $("code").value = [...r].map(n => a[n % a.length]).join(""); };
+        $("go").onclick = async () => {
+            const code = $("code").value.trim(), salt = $("salt").value, label = ($("label").value.trim() || "Visiteur").replace(/"/g, "'");
+            if (code.length < 8) { $("out").textContent = "Choisis un code d'au moins 8 caractères (10 ou plus, c'est mieux)."; return; }
+            const h = await sha(salt + "|" + code);
+            $("out").textContent = '{ label: "' + label + '", hash: "' + h + '" },';
+            $("hint").textContent = "Colle cette ligne dans la liste « codes » de gate.js. Envoie le code « " + code + " » à la personne sur WhatsApp (c'est le seul endroit où il apparaît).";
+        };
+    </script>
+</body>
+
+</html>
