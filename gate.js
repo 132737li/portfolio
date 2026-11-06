@@ -18,6 +18,7 @@ var GATE = {
   codes: [
     // { label: "Admin (moi)",  hash: "COLLE_ICI_L_EMPREINTE" },
     // { label: "Client Jean",  hash: "COLLE_ICI_UNE_AUTRE_EMPREINTE" },
+    { label: "Admnin", hash: "0f994995db265d0d5403a98db9ef7c15b1c0a1f73926fecdc453dd59b38f755e" },
   ],
 };
 
