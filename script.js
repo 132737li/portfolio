@@ -4,6 +4,7 @@ const FORMSPREE_ID = "moeekjwo";
 
 // ====== TES PROJETS ======
 // Remplace "bg" par une image : "url('images/mon-projet.jpg') center/cover"
+// locked: true = projet « accès sur demande » (pastille cadenas + demande WhatsApp)
 const data = [
   {
     category: "Application de gestion",
@@ -11,6 +12,7 @@ const data = [
     desc: "Application web (PWA) de gestion de stock et de ventes pour commerçants : fonctionne sans internet, en BIF, avec publicités générées par IA.",
     bg: "linear-gradient(135deg,#042f2e,#0f766e 60%,#5eead4)",
     link: "https://isokoai-woad.vercel.app/",
+    locked: true, // accès sur demande (page de code)
     // Traduction anglaise (affichée quand le site est en EN). Les autres projets sont traduits par i18n.js.
     en: {
       category: "Management app",
@@ -51,6 +53,7 @@ const data = [
     desc: "Assistant Windows en Python / PySide6 : commandes vocales et sécurité.",
     bg: "linear-gradient(135deg,#141e30,#243b55 60%,#7f00ff)",
     link: "#",
+    locked: true,
   },
   {
     category: "Automatisation",
@@ -65,6 +68,7 @@ const data = [
     desc: "Un site romantique pensé comme un cadeau numérique.",
     bg: "url(images/ltn.webp)",
     link: "https://132737li.github.io/Ltn/",
+    locked: true,
   },
   {
     category: "Intelligence artificielle",
@@ -72,14 +76,39 @@ const data = [
     desc: "Projet autour de l'IA et de l'automatisation.",
     bg: "url(images/lionflow-ai.webp)",
     link: "https://132737li.github.io/lionflow-ai/",
+    locked: true,
   },
 ];
 
+const WHATSAPP = "25776672387"; // ton numéro (pour le bouton « demander l'accès »)
 const DURATION = 6; // secondes entre chaque slide
 const $ = (s) => document.querySelector(s);
 const pad = (n) => String(n + 1).padStart(2, "0");
 // Texte d'un projet dans la langue du site (si une traduction "en" existe, sinon le français)
 const tr = (d, k) => (window.LANG === "en" && d.en && d.en[k]) || d[k];
+
+// Lien WhatsApp « Bonjour, je voudrais accéder au projet X »
+function askLink(d) {
+  const en = window.LANG === "en";
+  const msg = en
+    ? `Hello Lionel, I would like access to the project "${d.title}". Could you give me the entry code? Thank you.`
+    : `Bonjour Lionel, je souhaite accéder au projet « ${d.title} ». Peux-tu me donner le code d'entrée ? Merci.`;
+  return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
+}
+
+// Style des pastilles « accès sur demande » (slider)
+(function () {
+  const st = document.createElement("style");
+  st.textContent =
+    ".lock-badge{display:inline-flex;align-items:center;gap:6px;margin:0 0 14px;padding:6px 14px;border-radius:30px;" +
+    "background:#0007;border:1px solid #ffb02e99;color:#ffd27a;font-size:12px;font-weight:500;text-decoration:none;" +
+    "backdrop-filter:blur(4px);transition:background .2s,color .2s}" +
+    ".lock-badge:hover{background:#ffb02e;color:#111}" +
+    ".lock-badge[hidden]{display:none!important}" +
+    ".card-lock{display:inline-block;margin:0 0 6px;padding:2px 9px;border-radius:20px;background:#000a;" +
+    "border:1px solid #ffffff55;color:#fff;font-size:10px;font-weight:500;letter-spacing:.3px}";
+  document.head.appendChild(st);
+})();
 
 const stage = $("#home"), bg = $("#bg"), cardsEl = $("#cards"), details = $("#details");
 const bar = $("#bar");
@@ -99,17 +128,31 @@ function renderCards() {
     .slice(1)
     .map((i) => `
       <div class="card" data-i="${i}" style="background:${data[i].bg}">
-        <div class="card-info"><small>${tr(data[i], "category")}</small><h4>${data[i].title}</h4></div>
+        <div class="card-info">${data[i].locked ? `<span class="card-lock">🔒 ${window.LANG === "en" ? "On request" : "Sur demande"}</span><br>` : ""}<small>${tr(data[i], "category")}</small><h4>${data[i].title}</h4></div>
       </div>`)
     .join("");
 }
+
+// Pastille « accès sur demande » sous la catégorie du projet affiché
+const lockEl = document.createElement("a");
+lockEl.className = "lock-badge";
+lockEl.target = "_blank";
+lockEl.rel = "noopener noreferrer";
+lockEl.hidden = true;
+$("#d-cat").insertAdjacentElement("afterend", lockEl);
 
 function setDetails(i) {
   const d = data[i];
   $("#d-cat").textContent = tr(d, "category");
   $("#d-title").textContent = d.title;
   $("#d-desc").textContent = tr(d, "desc");
-  $("#d-link").href = d.link;
+  // Projet verrouillé sans lien en ligne : le bouton ouvre la demande d'accès WhatsApp
+  $("#d-link").href = d.locked && d.link === "#" ? askLink(d) : d.link;
+  lockEl.hidden = !d.locked;
+  if (d.locked) {
+    lockEl.href = askLink(d);
+    lockEl.textContent = window.LANG === "en" ? "🔒 Access on request · ask for the code" : "🔒 Accès sur demande · demander le code";
+  }
   $("#num").textContent = pad(i);
 }
 
@@ -286,7 +329,7 @@ form.addEventListener("submit", async (e) => {
 });
 
 /* ================= INIT ================= */
-// Changement de langue : on réécrit les textes du slider (carte, catégorie, description)
+// Changement de langue : on réécrit les textes du slider (carte, catégorie, description, pastille)
 document.addEventListener("langchange", () => {
   renderCards();
   setDetails(order[0]);

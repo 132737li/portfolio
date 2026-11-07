@@ -1,8 +1,9 @@
 // ====== TES PROJETS (modifie ici) ======
 // type : "web" | "mobile" | "ia"
 // demo / code : laisse "" s'il n'y a pas encore de lien
-// img : chemin d'une capture à toi (ex: "images/berlly.jpg"). Si vide et qu'il y a une démo,
-//       une capture automatique du site est utilisée.
+// locked : true = « accès sur demande » (pastille cadenas + bouton « Demander l'accès » WhatsApp)
+// img : chemin d'une capture à toi (ex: "images/berlly.jpg"). Si vide et qu'il y a une démo
+//       (et que le projet n'est pas verrouillé), une capture automatique du site est utilisée.
 const PROJECTS = [
   {
     title: "ISOKO AI", type: "ia",
@@ -13,6 +14,7 @@ const PROJECTS = [
     tech: ["React", "TypeScript", "Vite", "Supabase", "Tailwind", "Gemini", "PWA"],
     demo: "https://isokoai-woad.vercel.app/",
     code: "https://github.com/132737li/isoko-ai",
+    locked: true, // accès sur demande (page de code)
     img: "", bg: "linear-gradient(135deg,#042f2e,#0f766e 60%,#5eead4)",
   },
   {
@@ -35,6 +37,7 @@ const PROJECTS = [
     tech: ["HTML", "CSS", "JavaScript"],
     demo: "https://132737li.github.io/Ltn/",
     code: "https://github.com/132737li/Ltn",
+    locked: true,
     img: "", bg: "linear-gradient(135deg,#ff758c,#c2185b)",
   },
   {
@@ -44,8 +47,9 @@ const PROJECTS = [
       en: "A project around artificial intelligence and automation, linked to my JARVIS assistant.",
     },
     tech: ["JavaScript", "IA"],
-    demo: "",
+    demo: "https://132737li.github.io/lionflow-ai/",
     code: "https://github.com/132737li/lionflow-ai",
+    locked: true,
     img: "", bg: "linear-gradient(135deg,#141e30,#243b55 60%,#7f00ff)",
   },
   {
@@ -86,6 +90,7 @@ const PROJECTS = [
     },
     tech: ["Python", "PySide6"],
     demo: "", code: "",
+    locked: true,
     img: "", bg: "linear-gradient(135deg,#0b1a3a,#0a3d91 60%,#00b4ff)",
   },
   {
@@ -100,16 +105,22 @@ const PROJECTS = [
   },
 ];
 
+const WHATSAPP = "25776672387"; // ton numéro (bouton « demander l'accès »)
+
 const UI = {
   fr: {
     filters: { all: "Tous", web: "Sites web", mobile: "Mobile", ia: "IA & Automatisation" },
     types: { web: "Site web", mobile: "Mobile", ia: "IA" },
     demo: "Démo", code: "Code", soon: "Bientôt en ligne", alt: "Aperçu du projet ",
+    lock: "Accès sur demande", ask: "Demander l'accès",
+    askMsg: (t) => "Bonjour Lionel, je souhaite accéder au projet « " + t + " ». Peux-tu me donner le code d'entrée ? Merci.",
   },
   en: {
     filters: { all: "All", web: "Websites", mobile: "Mobile", ia: "AI & Automation" },
     types: { web: "Website", mobile: "Mobile", ia: "AI" },
     demo: "Demo", code: "Code", soon: "Coming soon", alt: "Preview of the project ",
+    lock: "Access on request", ask: "Request access",
+    askMsg: (t) => "Hello Lionel, I would like access to the project \"" + t + "\". Could you give me the entry code? Thank you.",
   },
 };
 
@@ -159,7 +170,7 @@ function getShot(demo) {
   return SHOT_PROMISES[demo];
 }
 
-// Petit style pour l'apparition en fondu et l'effet d'attente
+// Petit style pour l'apparition en fondu, l'effet d'attente et la pastille « accès sur demande »
 (function () {
   const s = document.createElement("style");
   s.textContent =
@@ -169,6 +180,11 @@ function getShot(demo) {
     "background:linear-gradient(110deg,transparent 30%,#ffffff33 50%,transparent 70%);" +
     "background-size:200% 100%;animation:shotwait 1.4s linear infinite}" +
     "@keyframes shotwait{to{background-position:-200% 0}}" +
+    ".p-lock{position:absolute;top:12px;right:12px;z-index:3;padding:5px 12px;border-radius:30px;background:#000b;" +
+    "border:1px solid #ffb02e99;color:#ffd27a;font-size:11px;font-weight:500;backdrop-filter:blur(4px)}" +
+    ".p-thumb.locked::after{content:'🔒';position:absolute;inset:0;display:grid;place-items:center;font-size:44px;" +
+    "opacity:.35;pointer-events:none}" +
+    ".p-actions{flex-wrap:wrap}" +
     "@media (prefers-reduced-motion:reduce){.p-thumb img{transition:none}.p-thumb.wait::before{animation:none}}";
   document.head.appendChild(s);
 })();
@@ -227,9 +243,10 @@ function getShot(demo) {
       thumb.style.background = p.bg;
       const alt = ui.alt + p.title;
 
+      if (p.locked) thumb.classList.add("locked");
       if (p.img) {
         addImg(thumb, p.img, alt);                   // ta propre capture
-      } else if (p.demo) {
+      } else if (p.demo && !p.locked) {              // pas de capture auto sur un site verrouillé (on verrait la page de code)
         thumb.classList.add("wait");                 // capture automatique
         getShot(p.demo).then((src) => {
           thumb.classList.remove("wait");
@@ -237,6 +254,7 @@ function getShot(demo) {
         });
       }
       thumb.appendChild(el("span", "p-type", ui.types[p.type] || p.type));
+      if (p.locked) thumb.appendChild(el("span", "p-lock", "🔒 " + ui.lock));
 
       const body = el("div", "p-body");
       body.appendChild(el("h3", "", p.title));
@@ -257,7 +275,13 @@ function getShot(demo) {
         a.href = p.code; a.target = "_blank"; a.rel = "noopener";
         actions.appendChild(a);
       }
-      if (!p.demo && !p.code) actions.appendChild(el("span", "soon", ui.soon));
+      if (p.locked) {
+        const a = el("a", "btn ghost dark-text", "🔑 " + ui.ask);
+        a.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(ui.askMsg(p.title));
+        a.target = "_blank"; a.rel = "noopener noreferrer";
+        actions.appendChild(a);
+      }
+      if (!p.demo && !p.code && !p.locked) actions.appendChild(el("span", "soon", ui.soon));
       body.appendChild(actions);
 
       card.append(thumb, body);
