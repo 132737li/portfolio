@@ -21,8 +21,6 @@
     <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230e0e10'/%3E%3Ctext x='50' y='70' font-size='62' font-family='Arial' font-weight='700' text-anchor='middle' fill='%23ffb02e'%3EL%3C/text%3E%3C/svg%3E" />
 
-    <script src="gate.js"></script>    
-
     <script>
         // Applique le thème avant l'affichage (évite le flash)
         try {
@@ -223,6 +221,10 @@
             <div class="row">
                 <input type="text" name="name" placeholder="Ton nom" data-i18n-ph="ph.name" required />
                 <input type="email" name="email" placeholder="Ton email" data-i18n-ph="ph.email" required />
+            </div>
+            <div class="row">
+                <input type="tel" name="phone" inputmode="tel" autocomplete="tel"
+                    placeholder="Ton numéro de téléphone (ex : +257 76 00 00 00)" required />
             </div>
             <textarea name="message" rows="5" placeholder="Décris ton projet" data-i18n-ph="ph.msg" required></textarea>
             <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" />

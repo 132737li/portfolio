@@ -1,6 +1,7 @@
 // ====== RÉGLAGES ======
 const MY_EMAIL = "lirakoze602@gmail.com";
 const FORMSPREE_ID = "moeekjwo";
+const CONTACT_PHONE_REQUIRED = true; // true = le numéro de téléphone du visiteur est obligatoire (false = facultatif)
 
 // ====== TES PROJETS ======
 // Remplace "bg" par une image : "url('images/mon-projet.jpg') center/cover"
@@ -61,6 +62,7 @@ const data = [
     desc: "Bot WhatsApp connecté à OpenAI via l'API Meta et un webhook.",
     bg: "linear-gradient(135deg,#0b3d2e,#11998e 60%,#38ef7d)",
     link: "#",
+    locked: true,
   },
   {
     category: "Site romantique",
@@ -80,20 +82,20 @@ const data = [
   },
 ];
 
-const WHATSAPP = "25776672387"; // ton numéro (pour le bouton « demander l'accès »)
+const SLIDE_WA = "25776672387"; // ton numéro (pour le bouton « demander l'accès »)
 const DURATION = 6; // secondes entre chaque slide
 const $ = (s) => document.querySelector(s);
 const pad = (n) => String(n + 1).padStart(2, "0");
 // Texte d'un projet dans la langue du site (si une traduction "en" existe, sinon le français)
-const tr = (d, k) => (window.LANG === "en" && d.en && d.en[k]) || d[k];
+const slideTr = (d, k) => (window.LANG === "en" && d.en && d.en[k]) || d[k];
 
 // Lien WhatsApp « Bonjour, je voudrais accéder au projet X »
-function askLink(d) {
+function slideAsk(d) {
   const en = window.LANG === "en";
   const msg = en
     ? `Hello Lionel, I would like access to the project "${d.title}". Could you give me the entry code? Thank you.`
     : `Bonjour Lionel, je souhaite accéder au projet « ${d.title} ». Peux-tu me donner le code d'entrée ? Merci.`;
-  return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg);
+  return "https://wa.me/" + SLIDE_WA + "?text=" + encodeURIComponent(msg);
 }
 
 // Style des pastilles « accès sur demande » (slider)
@@ -128,30 +130,30 @@ function renderCards() {
     .slice(1)
     .map((i) => `
       <div class="card" data-i="${i}" style="background:${data[i].bg}">
-        <div class="card-info">${data[i].locked ? `<span class="card-lock">🔒 ${window.LANG === "en" ? "On request" : "Sur demande"}</span><br>` : ""}<small>${tr(data[i], "category")}</small><h4>${data[i].title}</h4></div>
+        <div class="card-info">${data[i].locked ? `<span class="card-lock">🔒 ${window.LANG === "en" ? "On request" : "Sur demande"}</span><br>` : ""}<small>${slideTr(data[i], "category")}</small><h4>${data[i].title}</h4></div>
       </div>`)
     .join("");
 }
 
 // Pastille « accès sur demande » sous la catégorie du projet affiché
-const lockEl = document.createElement("a");
-lockEl.className = "lock-badge";
-lockEl.target = "_blank";
-lockEl.rel = "noopener noreferrer";
-lockEl.hidden = true;
-$("#d-cat").insertAdjacentElement("afterend", lockEl);
+const slideLock = document.createElement("a");
+slideLock.className = "lock-badge";
+slideLock.target = "_blank";
+slideLock.rel = "noopener noreferrer";
+slideLock.hidden = true;
+$("#d-cat").insertAdjacentElement("afterend", slideLock);
 
 function setDetails(i) {
   const d = data[i];
-  $("#d-cat").textContent = tr(d, "category");
+  $("#d-cat").textContent = slideTr(d, "category");
   $("#d-title").textContent = d.title;
-  $("#d-desc").textContent = tr(d, "desc");
+  $("#d-desc").textContent = slideTr(d, "desc");
   // Projet verrouillé sans lien en ligne : le bouton ouvre la demande d'accès WhatsApp
-  $("#d-link").href = d.locked && d.link === "#" ? askLink(d) : d.link;
-  lockEl.hidden = !d.locked;
+  $("#d-link").href = d.locked && d.link === "#" ? slideAsk(d) : d.link;
+  slideLock.hidden = !d.locked;
   if (d.locked) {
-    lockEl.href = askLink(d);
-    lockEl.textContent = window.LANG === "en" ? "🔒 Access on request · ask for the code" : "🔒 Accès sur demande · demander le code";
+    slideLock.href = slideAsk(d);
+    slideLock.textContent = window.LANG === "en" ? "🔒 Access on request · ask for the code" : "🔒 Accès sur demande · demander le code";
   }
   $("#num").textContent = pad(i);
 }
@@ -266,6 +268,16 @@ onScroll();
 /* ================= FORMULAIRE DE CONTACT (Formspree) ================= */
 const form = $("#contact-form");
 const statusEl = $("#form-status");
+const contactPhone = form.querySelector('[name="phone"]');
+
+// Texte du champ téléphone selon la langue (FR / EN)
+function setPhonePlaceholder() {
+  if (contactPhone) {
+    contactPhone.placeholder = window.LANG === "en"
+      ? "Your phone number (e.g. +257 76 00 00 00)"
+      : "Ton numéro de téléphone (ex : +257 76 00 00 00)";
+  }
+}
 const formBtn = $("#form-btn");
 
 function setStatus(msg, type) {
@@ -283,9 +295,22 @@ form.addEventListener("submit", async (e) => {
   const name = (fd.get("name") || "").trim();
   const email = (fd.get("email") || "").trim();
   const message = (fd.get("message") || "").trim();
+  const phone = (fd.get("phone") || "").trim();
 
   if (!name || !message || !/^\S+@\S+\.\S+$/.test(email)) {
     setStatus("Merci de remplir correctement tous les champs.", "err");
+    return;
+  }
+
+  // Téléphone : 8 à 15 chiffres, avec un + au début si format international
+  const phoneOk = /^\+?\d{8,15}$/.test(phone.replace(/[\s().-]/g, ""));
+  if ((CONTACT_PHONE_REQUIRED || phone) && !phoneOk) {
+    setStatus(
+      window.LANG === "en"
+        ? "Please enter a valid phone number (e.g. +257 76 00 00 00)."
+        : "Merci d'entrer un numéro de téléphone valide (ex : +257 76 00 00 00).",
+      "err"
+    );
     return;
   }
 
@@ -303,6 +328,7 @@ form.addEventListener("submit", async (e) => {
       body: JSON.stringify({
         name,
         email,
+        phone: phone || "—",
         message,
         _subject: `Contact portfolio — ${name}`,
       }),
@@ -319,7 +345,7 @@ form.addEventListener("submit", async (e) => {
   } catch (err) {
     // Plan B : ouvre l'application mail avec le message prêt
     const subject = encodeURIComponent("Contact portfolio — " + name);
-    const body = encodeURIComponent(message + "\n\n— " + name + " (" + email + ")");
+    const body = encodeURIComponent(message + "\n\n— " + name + " (" + email + (phone ? ", " + phone : "") + ")");
     setStatus("Connexion impossible. Ouverture de ton application mail...", "err");
     location.href = `mailto:${MY_EMAIL}?subject=${subject}&body=${body}`;
   } finally {
@@ -333,8 +359,10 @@ form.addEventListener("submit", async (e) => {
 document.addEventListener("langchange", () => {
   renderCards();
   setDetails(order[0]);
+  setPhonePlaceholder();
 });
 
+setPhonePlaceholder();
 $("#total").textContent = String(data.length).padStart(2, "0");
 $("#year").textContent = new Date().getFullYear();
 bg.style.background = data[order[0]].bg;

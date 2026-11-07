@@ -101,11 +101,12 @@ const PROJECTS = [
     },
     tech: ["Node.js", "OpenAI", "Meta API"],
     demo: "", code: "",
+    locked: true,
     img: "", bg: "linear-gradient(135deg,#0b3d2e,#11998e 60%,#38ef7d)",
   },
 ];
 
-const WHATSAPP = "25776672387"; // ton numéro (bouton « demander l'accès »)
+const PROJECTS_WA = "25776672387"; // ton numéro (bouton « demander l'accès »)
 
 const UI = {
   fr: {
@@ -277,7 +278,7 @@ function getShot(demo) {
       }
       if (p.locked) {
         const a = el("a", "btn ghost dark-text", "🔑 " + ui.ask);
-        a.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(ui.askMsg(p.title));
+        a.href = "https://wa.me/" + PROJECTS_WA + "?text=" + encodeURIComponent(ui.askMsg(p.title));
         a.target = "_blank"; a.rel = "noopener noreferrer";
         actions.appendChild(a);
       }
