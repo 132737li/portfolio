@@ -18,6 +18,18 @@ const PROJECTS = [
     img: "", bg: "linear-gradient(135deg,#042f2e,#0f766e 60%,#5eead4)",
   },
   {
+    title: "Lionel AI Growth Agent", type: "ia",
+    desc: {
+      fr: "Agent IA pour la croissance d'une chaîne YouTube, installable comme une application (PWA) sur téléphone et ordinateur.",
+      en: "AI agent to grow a YouTube channel, installable like an app (PWA) on phone and computer.",
+    },
+    tech: ["Python", "Streamlit", "IA", "PWA"],
+    demo: "https://132737li.github.io/pwa-youtube-agent/",
+    code: "https://github.com/132737li/youtube-ai-agent", // projet privé : pas de lien vers le code
+    locked: true, // accès sur demande
+    img: "", bg: "linear-gradient(135deg,#080814,#3b0a14 55%,#ff3b3b)",
+  },
+  {
     title: "Berlly Boutique", type: "web",
     desc: {
       fr: "Boutique de produits de beauté : catégories, panier, pages produits et contact. Backend Node.js / Express.",
@@ -101,7 +113,6 @@ const PROJECTS = [
     },
     tech: ["Node.js", "OpenAI", "Meta API"],
     demo: "", code: "",
-    locked: true,
     img: "", bg: "linear-gradient(135deg,#0b3d2e,#11998e 60%,#38ef7d)",
   },
 ];

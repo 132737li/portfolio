@@ -21,6 +21,18 @@ const data = [
     },
   },
   {
+    category: "Agent IA",
+    title: "Lionel AI Growth Agent",
+    desc: "Agent IA pour la croissance d'une chaîne YouTube, installable comme une application (PWA) sur téléphone et ordinateur.",
+    bg: "linear-gradient(135deg,#080814,#3b0a14 55%,#ff3b3b)",
+    link: "https://132737li.github.io/pwa-youtube-agent/",
+    locked: true, // projet privé : accès sur demande
+    en: {
+      category: "AI agent",
+      desc: "AI agent to grow a YouTube channel, installable like an app (PWA) on phone and computer.",
+    },
+  },
+  {
     category: "Boutique en ligne",
     title: "Berlly Boutique",
     desc: "Boutique e-commerce avec backend Node.js / Express : catalogue, panier et commandes.",
@@ -62,7 +74,6 @@ const data = [
     desc: "Bot WhatsApp connecté à OpenAI via l'API Meta et un webhook.",
     bg: "linear-gradient(135deg,#0b3d2e,#11998e 60%,#38ef7d)",
     link: "#",
-    locked: true,
   },
   {
     category: "Site romantique",
